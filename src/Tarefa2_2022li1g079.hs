@@ -10,35 +10,37 @@ module Tarefa2_2022li1g079 where
 
 import LI12223
 
-estendeMapa :: Mapa -> Int -> Mapa
-estendeMapa m n = 
+--estendeMapa :: Mapa -> Int -> Mapa
+--estendeMapa m n = 
+
+estendeMapaAux :: Mapa -> Int -> Mapa
+estendeMapaAux m i = proximosTerrenosValidos m !! mod i length proximosTerrenosValidos m
+
 
 proximosTerrenosValidos :: Mapa -> [Terreno]
 proximosTerrenosValidos (Mapa l []) = [Estrada 0, Rio 0, Relva]
 proximosTerrenosValidos (Mapa l ((Rio y,x):(Rio y1,x1):(Rio y2,x2):(Rio y3,x3):t)) = [Estrada 0,Relva]
 proximosTerrenosValidos (Mapa l ((Rio y,x):t)) = [Estrada 0, Rio 0, Relva]
-proximosTerrenosValidos (Mapa l ((Estrada y,x):(Estrada y1,x1):(Estrada y2,x2):(Estrada y3,x3):(Estrada y4,x4))) = [Rio 0,Relva]
-proximosTerrenosValidos (Mapa l ((Relva x):(Relva x1):(Relva x2):(Relva x3):(Relva x4))) = [Estrada 0, Rio 0]
+proximosTerrenosValidos (Mapa l ((Estrada y,x):(Estrada y1,x1):(Estrada y2,x2):(Estrada y3,x3):(Estrada y4,x4):t)) = [Rio 0,Relva]
+proximosTerrenosValidos (Mapa l ((Relva , x0):(Relva , x1):(Relva , x2):(Relva , x3):(Relva , x4):t)) = [Estrada 0, Rio 0]
 proximosTerrenosValidos (Mapa l ((Estrada y,x):t)) = [Estrada 0, Rio 0, Relva ]
-proximosTerrenosValidos (Mapa l ((Relva x)):t) = [Estrada 0, Rio 0, Relva]
+proximosTerrenosValidos (Mapa l ((Relva, x):t)) = [Estrada 0, Rio 0, Relva]
 
 
 
 
 proximosObstaculosValidos :: Int -> (Terreno, [Obstaculo]) -> [Obstaculo]
-proximosObstaculosValidos n (x,y) | length x == n = []
-                                  | length x == (n-1) && (elem Nenhum x) == False = [Nenhum]
-                                  | otherwise = proximosObstaculosValidos n (x,y)
+proximosObstaculosValidos n (x,y) | length y == n = []
+                                  | length y == (n-1) && (elem Nenhum y) == False = [Nenhum]
+                                  | otherwise = proximosObstaculosValidosaux n (x,y)
+
 
 proximosObstaculosValidosaux :: Int -> (Terreno, [Obstaculo]) -> [Obstaculo]
+proximosObstaculosValidosaux n ((Rio y),(Tronco:Tronco:Tronco:Tronco:Tronco:t)) = [Nenhum]
 proximosObstaculosValidosaux n ((Rio y),x) = [Nenhum, Tronco]
 proximosObstaculosValidosaux n ((Relva),x) = [Nenhum, Arvore]
-proximosObstaculosValidosaux n ((Rio y),(Tronco:Tronco:Tronco:Tronco:Tronco:t)) = [Nenhum]
 proximosObstaculosValidosaux n ((Estrada y),(Carro:Carro:Carro:t)) = [Nenhum]
 proximosObstaculosValidosaux n ((Estrada y),x) = [Nenhum, Carro]
-
-
-
 
 
 
