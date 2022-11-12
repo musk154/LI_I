@@ -10,6 +10,9 @@ module Tarefa1_2022li1g079 where
 
 import LI12223
 
+--mapaValido :: Mapa -> Bool
+--mapaValido (Mapa c ((tr, (x:y)):t)) = mapaValido1 (Mapa c ((tr, (x:y)):t)) && mapaValido2 (Mapa c ((tr, (x:y)):t)) && mapaValido3 (Mapa c ((tr, (x:y)):t)) && mapaValido4 (Mapa c ((tr, (x:y)):t)) && mapaValido5 (Mapa c ((tr, (x:y)):t)) && mapaValido6 (Mapa c ((tr, (x:y)):t)) && mapaValido7 (Mapa c ((tr, (x:y)):t))
+
 mapaValido1 :: Mapa -> Bool
 mapaValido1 (Mapa c []) = True
 mapaValido1 (Mapa c (((Estrada n),(x:y)):t)) 
@@ -70,3 +73,39 @@ contaAux1 [] = 0
 contaAux1 ((x:y):t) | (elem Carro (x:y)) && (length (x:y) >= (contaAux1 t)) = length (x:y)
                     | otherwise = contaAux1 t                                        
                     
+
+mapaValido5 :: Mapa -> Bool 
+mapaValido5 (Mapa c []) = True
+mapaValido5 (Mapa c ((tr, (x:y)):t))| elem Nenhum (x:y) == False = False
+                                    | otherwise = mapaValido5 (Mapa c t)
+
+mapaValido6 :: Mapa -> Bool
+mapaValido6 (Mapa c []) = True
+mapaValido6 (Mapa c ((tr, (x:y)):t)) | c /= length (x:y) = False
+                                     | otherwise = mapaValido6 (Mapa c t)
+
+--mapaValido7 :: Mapa -> Bool 
+--mapaValido7 (Mapa c []) = True
+--mapaValido7 (Mapa c ((tr, (x:y)):t)) | length (x:y)
+
+mapaValido7aux :: Mapa -> Bool 
+mapaValido7aux (Mapa c ((tr , (x:y)):t)) = case (tr) of 
+Estrada && (tamanhoObs (Mapa c ((tr , (x:y)):t)) >5) -> False
+Relva && (tamanhoObs (Mapa c ((tr , (x:y)):t))>5)    -> False
+Rio && (tamanhoObs (Mapa c ((tr , (x:y)):t))>4)      -> False
+_                                                    -> True
+
+tamanhoObs:: Mapa -> Int
+tamanhoObs (Mapa c ((tr , (x:y)):t)) = (length (x:y)) + length t 
+
+
+
+
+
+
+
+--Relva || tr of (Estrada ) ) && (length (x:y)>5)) -> False
+--                                      | (tr== (Rio ) && (length (x:y)> 4)) = False
+--                                      | otherwise = mapaValido7 (Mapa c t)
+
+--mapaValido7 (Mapa c (Relva, (x:y)):t)
