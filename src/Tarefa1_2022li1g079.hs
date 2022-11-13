@@ -1,3 +1,4 @@
+
 {- |
 Module      : Tarefa1_2022li1g079
 Description : Validação de um mapa
@@ -61,6 +62,8 @@ mapaValido2 (Mapa c ((Rio n, (x:y)): (Rio n', (x':y')): t))
 {-Na função mapaValido3 verifamos que os troncos não tem mais de 5 unidades.
 Como nas funções vistas até agora, o caso de paragem na primeira linha acontece por não ter erro nenhum, a lista de obstáculos está vazia.
 No caso de o primeiro terreno ser relva ou estrada, que não estamos a avaliar nesta função, a função irá avaliar o resto da lista (Terreno,[Obstáculo]) (recursividade).
+Considerando que em rio  a linha tem movimento, os obstaculo movem-se do final para o inicio. Se tiverem cinco troncos no inicio da linha e outro no final, com o movimento, ficariam seis troncos seguido, o que nao é válido.
+Por isso, na quarta linha verificamos que os casos em que na movimentaçao da linha ficariam troncos a mais seguidos, o resultado é falso. Comparamos o comprimento da primeira e última linha de obstáculos iguais.
 Quando o primeiro terreno coincide com Rio, a partir de duas funções auxiliares que criamos (conta e contaAux - agrupa elementos iguais e consecutivos numa lista; 
 procura e devolve o numero de elementos com maior numero de Troncos das listas resultantes da primeira função (respetivamente)), se existirem troncos com mais de 5 unidades, o mapa não 
 será válido pois não cumpre os requisitos. Se não existir nenhum caso onde existem troncos com mais de cinco unidades então, verificamos o resto da lista e se nada ocorrer em contrário,
@@ -71,7 +74,8 @@ mapaValido3 :: Mapa -> Bool
 mapaValido3 (Mapa c []) = True
 mapaValido3 (Mapa c ((Relva, (x:y)):t)) = mapaValido3 (Mapa c t)
 mapaValido3 (Mapa c ((Estrada n, (x:y)):t)) = mapaValido3 (Mapa c t) 
-mapaValido3 (Mapa c ((Rio n, (x:y)):t)) | contaAux (conta (x:y)) > 5 = False
+mapaValido3 (Mapa c ((Rio n, (x:y)):t)) | length (conta (x:y)) > 1 && elem Tronco (head (conta (x:y))) && elem Tronco (last (conta (x:y))) && length (head (conta (x:y))) + length (last (conta (x:y))) > 5 = False 
+                                        | contaAux (conta (x:y)) > 5 = False
                                         | otherwise = mapaValido3 (Mapa c t)
 
 
@@ -91,6 +95,8 @@ contaAux ((x:y):t) | (elem Tronco (x:y)) && (length (x:y) >= (contaAux t)) = len
 {-Pela mesma lógica que a função mapaValido3, para função mapaValido4, que pretende verificar se não existem carros com mais de três unidades, utilizamos a função auxilar conta (criada em cima) e
 a função contaAux1 que é uma variação da função contaAux mas procura e devolve o numero de elementos com maior numero de Carros, e não Troncos, das listas resultantes da primeira função.
 Na primeira linha está o caso de paragem semelhante ás funções vistas até ao momento (se a lista não contém nada, não pode dar erro).
+Considerando que em estrada a linha tem movimento, os obstaculo movem-se do final para o inicio. Se tiverem tres carros no inicio da linha e outro no final, com o movimento, ficariam quatro carros seguido, o que nao é válido.
+Por isso, na quarta linha verificamos que os casos em que na movimentaçao da linha ficariam carros a mais seguidos, o resultado é falso. Comparamos o comprimento da primeira e última linha de obstáculos iguais.
 De seguida definimos os casos em que o primeiro terreno não é estrada, ou seja, relva ou rio, em que a função irá apenas verificar o resto da lista.
 Quando a função encontra um terreno estrada (utiliza as funções auxiliares) verifica se o número de carros seguidos nessa lista é superior a três. Se sim, o mapa não é válido, se não então verificamos 
 a validade do resto da lista.
@@ -100,7 +106,8 @@ mapaValido4 :: Mapa -> Bool
 mapaValido4 (Mapa c []) = True
 mapaValido4 (Mapa c ((Relva, (x:y)):t)) = mapaValido4 (Mapa c t)
 mapaValido4 (Mapa c ((Rio n, (x:y)):t)) = mapaValido4 (Mapa c t) 
-mapaValido4 (Mapa c ((Estrada n, (x:y)):t)) | contaAux1 (conta (x:y)) > 3 = False
+mapaValido4 (Mapa c ((Estrada n, (x:y)):t)) |length (conta (x:y)) > 1 && elem Carro (head (conta (x:y))) && elem Carro (last (conta (x:y))) && length (head (conta (x:y))) + length (last (conta (x:y))) > 3 = False 
+                                            | contaAux1 (conta (x:y)) > 3 = False
                                             | otherwise = mapaValido4 (Mapa c t)
 
 
@@ -160,3 +167,4 @@ conta7 [x] = [[x]]
 conta7 ((x,y):(x',y'):t) | x == x' = ((x,y):(head r)) : tail r
                          | otherwise = [(x,y)] :r
                          where r = conta7 ((x',y'):t)
+
