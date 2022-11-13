@@ -10,12 +10,14 @@ module Tarefa2_2022li1g079 where
 
 import LI12223
 
---estendeMapa :: Mapa -> Int -> Mapa
---estendeMapa m n = 
+estendeMapa :: Mapa -> Int -> Mapa
+estendeMapa mapa num = 
 
 
 
-{- A função geradorT é responsável por gerar aleatoriamente novos terrenos -}
+
+
+{- A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utilixa para isso a função geradorT e geradorObs-}
 
 geradorT :: Mapa -> Int -> Terreno
 geradorT (Mapa l ls) num | prox == Rio 0 = Rio ((mod num (div l 2)) + 3)
