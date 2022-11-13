@@ -39,7 +39,7 @@ geradorObs (Rio vel) obs l num | obs == [] = geradorObs (Rio vel) ([[Nenhum,Tron
                                | otherwise = geradorObs (Rio vel) prox l num
     where prox = (proximosObstaculosValidos l (Rio vel, obs)) !! mod (num + length obs) (length (proximosObstaculosValidos l (Rio vel, obs))) : obs
 
-geradorObs (Estrada vel) obs l num | obs == [] = geradorObs (Estrada vel) ([[Nenhum,Tronco] !! (mod num 2)]) l num
+geradorObs (Estrada vel) obs l num | obs == [] = geradorObs (Estrada vel) ([[Nenhum,Carro] !! (mod num 2)]) l num
                                    | length obs == l = obs
                                    | otherwise = geradorObs (Estrada vel) prox l num
     where prox = (proximosObstaculosValidos l (Estrada vel, obs)) !! mod (num + length obs) (length (proximosObstaculosValidos l (Estrada vel, obs))) : obs
