@@ -10,8 +10,12 @@ module Tarefa2_2022li1g079 where
 
 import LI12223
 
+{- | A função estendeMapa é responsável por gerar novas linhas válidas para o mapa, assim como obstaculos para as novas linhas. Para o fazer
+utiliza as funções auxiliares geradorT e geradorObs
+-}
+
 estendeMapa :: Mapa -> Int -> Mapa
-estendeMapa mapa num = 
+estendeMapa (Mapa l ls) num = Mapa l ((geradorT (Mapa l ls) num , geradorObs (geradorT (Mapa l ls) num) [] l num): init ls) 
 
 
 
@@ -20,8 +24,8 @@ estendeMapa mapa num =
 {- A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utilixa para isso a função geradorT e geradorObs-}
 
 geradorT :: Mapa -> Int -> Terreno
-geradorT (Mapa l ls) num | prox == Rio 0 = Rio ((mod num (div l 2)) + 3)
-                         | prox == Estrada 0 = Estrada ((mod num (div l 2)) + 1)
+geradorT (Mapa l ls) num | prox == Rio 0 = (Rio ((mod num (div l 2)) + 3))
+                         | prox == Estrada 0 = (Estrada ((mod num (div l 2)) + 1))
                          | prox == Relva = Relva
     where prox = proximosTerrenosValidos (Mapa l ls) !! mod (num + length ls) (length (proximosTerrenosValidos (Mapa l ls)))
 
