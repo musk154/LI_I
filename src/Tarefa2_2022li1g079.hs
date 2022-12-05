@@ -21,7 +21,7 @@ estendeMapa (Mapa l ls) num = Mapa l ((geradorT (Mapa l ls) num , geradorObs (ge
 
 
 
-{- A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utilixa para isso a função geradorT e geradorObs-}
+{- |A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utilixa para isso a função geradorT e geradorObs-}
 
 geradorT :: Mapa -> Int -> Terreno
 geradorT (Mapa l ls) num | prox == Rio 0 = (Rio ((mod num (div l 2)) + 3))
@@ -29,7 +29,7 @@ geradorT (Mapa l ls) num | prox == Rio 0 = (Rio ((mod num (div l 2)) + 3))
                          | prox == Relva = Relva
     where prox = proximosTerrenosValidos (Mapa l ls) !! mod (num + length ls) (length (proximosTerrenosValidos (Mapa l ls)))
 
-{- A função geradorObs é responsável por gerar uma lista aleatoria de novos obstaculos, tendo em conta as restrições da
+{- | A função geradorObs é responsável por gerar uma lista aleatoria de novos obstaculos, tendo em conta as restrições da
 função proximosObstaculosValidos 
 -}
 
