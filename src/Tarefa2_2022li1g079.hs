@@ -15,13 +15,16 @@ utiliza as funções auxiliares geradorT e geradorObs
 -}
 
 estendeMapa :: Mapa -> Int -> Mapa
-estendeMapa (Mapa l ls) num = Mapa l ((geradorT (Mapa l ls) num , geradorObs (geradorT (Mapa l ls) num) [] l num): init ls) 
+estendeMapa (Mapa l ls) num = Mapa l ((geradorT (Mapa l ls) num , geradorObs (geradorT (Mapa l ls) num) [] l num): init ls)
 
+{- | A funçao deslizaJogo faz o mapa deslizar ao longo do tempo onde a última linha do mapa é retirada e adicionada uma nova linha,
+gerada aleatóriamente, no topo do mapa. Utiliza a funçao estende mapa para tal.  -}
 
+deslizaJogo :: Int -> Jogo -> Jogo
+deslizaJogo num (Jogo (Jogador (x,y)) (Mapa l ls)) = (Jogo (Jogador (x,y+1)) (estendeMapa (Mapa l (init ls))num)) 
+--falta uma funcao no final no mapa que retire a ultima linha em desliza jogo vai estar aqui (?? (estendeMapa(Mapa l ls)num))
 
-
-
-{- |A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utilixa para isso a função geradorT e geradorObs-}
+{- |A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utiliza para isso a função geradorT e geradorObs-}
 
 geradorT :: Mapa -> Int -> Terreno
 geradorT (Mapa l ls) num | prox == Rio 0 = (Rio ((mod num (div l 2)) + 3))
