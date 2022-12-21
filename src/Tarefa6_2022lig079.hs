@@ -52,7 +52,7 @@ mapaInicial = (Mapa 10 [(Rio 2, [n,n,t,t,t,n,n,t,n,t]),
 
 	                     
 estadoInicial :: Imagem -> World
-estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-50,-425)) (mapaInicial), imagem, 0)
+estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-50,-400)) (mapaInicial), imagem, 0)
 
 
 desenhaEstado :: World -> Picture
@@ -135,8 +135,8 @@ corRio =  dark $ corFundo
 
 main :: IO ()
 main = do
-	pacman <- loadBMP "pac_open.bmp"
-	let imagem = [scale 5 5 pacman]
+	character <- loadBMP "character.bmp"
+	let imagem = [scale 3 3 character]
 	play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu
 
 
