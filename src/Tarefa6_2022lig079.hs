@@ -28,9 +28,6 @@ data Menu = Opcoes Opcao
           | VenceuJogo
           | PerdeuJogo
 
---data Piece = Arvore | Nenhum | Carro | Tronco
-    --deriving Eq
-
 type World = (Menu, Jogo, Imagem, Pont)
 
 type Pont = Float
@@ -61,7 +58,7 @@ mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
 
                        
 estadoInicial :: Imagem -> World
-estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-80,-410)) (mapaInicial), imagem, 0) 
+estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-90,-405)) (mapaInicial), imagem, 0) 
 
 
 
@@ -127,9 +124,11 @@ desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n) x1
 
 desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n) x1 y1 | o == Tronco = (Translate x1 (y1+10) $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
                                                                                           | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
+
 desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, (o:t1)):t)),imagem,n) x1 y1 | o == Carro && vel > 0 = (Translate x1 y1 $ (!!) imagem 6): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
                                                                                               | o == Carro && vel < 0 = (Translate x1 y1 $ (!!) imagem 7): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
                                                                                               | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
+
 desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, (o:t1)):t)),imagem,n) x1 y1 | o == Arvore = (Translate x1 (y1+10) $ (!!) imagem 4): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n) (x1+90) y1
                                                                                         | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n) (x1+90) y1
 
@@ -201,7 +200,7 @@ main = do
   agua      <- loadBMP "agua.bmp"
   estrada   <- loadBMP "estrada.bmp"
   relva     <- loadBMP "relva.bmp"
-  arvore    <- loadBMP "3.bmp"
+  arvore    <- loadBMP "arvore1.bmp"
   tronco    <- loadBMP "tronco.bmp"
   carro1    <- loadBMP "car.bmp"
   carro3    <- loadBMP "CarroAmarelo.bmp"
@@ -209,7 +208,7 @@ main = do
                 scale 1 0.4 agua,
                 scale 0.3 0.143 estrada,
                 scale 0.2 0.170 relva,
-                scale 3.5 3.5 arvore,
+                scale 0.25 0.2 arvore,
                 scale 0.2 0.5 tronco,
                 scale 0.08 0.15 carro1,
                 scale 0.08 0.15 carro3]
