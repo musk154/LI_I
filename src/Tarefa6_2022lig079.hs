@@ -50,10 +50,10 @@ mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
                         (Relva, [a,a,n,n,a,n,a,a,n,n]),
                         (Rio 1, [n,n,t,t,t,n,t,t,n,n]),
                         (Estrada 2, [n,n,n,c,n,c,n,n,c,c]),
-                        (Relva, [n,n,n,t,t,n,n,n,t,n]),
-                        (Relva, [t,n,n,t,n,n,n,n,t,t]),
+                        (Relva, [n,n,n,a,a,n,n,n,a,n]),
+                        (Relva, [a,n,n,a,n,n,n,n,a,a]),
                         (Estrada (-2), [c,n,n,n,c,n,n,n,c,n]),
-                        (Relva, [t,t,n,n,n,n,t,t,n,t])]) 
+                        (Relva, [a,a,n,n,n,n,a,a,n,a])]) 
                 where a = Arvore
                       n = Nenhum
                       t = Tronco
@@ -61,7 +61,7 @@ mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
 
                        
 estadoInicial :: Imagem -> World
-estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-50,-400)) (mapaInicial), imagem, 0) 
+estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-80,-410)) (mapaInicial), imagem, 0) 
 
 
 
@@ -69,7 +69,7 @@ desenhaEstado :: World -> Picture
 desenhaEstado (PerdeuJogo, jogo, imagem, pont) = Translate (-50) 0 $ Color red $ scale 0.5 0.5 $ Text ("Score: " ++ show (round pont))
 desenhaEstado (Opcoes Jogar, jogo, imagem, pont) = Pictures [Color red $ desenhaOp "Jogar", Translate (-45) (-200) $  desenhaOp "Fechar"]
 desenhaEstado (Opcoes Sair, jogo, imagem, pont) = Pictures [desenhaOp "Jogar", Color red $ Translate (-45) (-200) $ desenhaOp "Fechar"]
-desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-425)) ++ [Translate i j $ player]
+desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-425)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-425)) ++ [Translate i j $ player]
    where 
      i = fromIntegral x
      j = fromIntegral y
@@ -122,11 +122,21 @@ desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem
 
 desenhaOp opc = Translate (-100) 50 $ Text opc
 
-{-desenhaObs :: World -> Float -> Float -> [Picture]
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, (o:t1)):t)),imagem,n) x1 y1 | o == Arvore = (Translate x1 y1 $ (!!) imagem 4): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l (Relva (t1)),imagem,n (x1+90) y1))
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n) x1 y1 | o == Tronco = (Translate x1 y1 $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l (Relva (t1)),imagem,n (x1+90) y1))
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, (o:t1)):t)),imagem,n) x1 y1 | o == Carro = (Translate x1 y1 $ (!!) imagem 6): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l (Relva (t1)),imagem,n (x1+90) y1))
--}
+desenhaObs :: World -> Float -> Float -> [Picture]
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n) x1 y1 = [circle 1]
+
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n) x1 y1 | o == Tronco = (Translate x1 (y1+10) $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
+                                                                                          | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, (o:t1)):t)),imagem,n) x1 y1 | o == Carro && vel > 0 = (Translate x1 y1 $ (!!) imagem 6): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
+                                                                                              | o == Carro && vel < 0 = (Translate x1 y1 $ (!!) imagem 7): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
+                                                                                              | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, (o:t1)):t)),imagem,n) x1 y1 | o == Arvore = (Translate x1 (y1+10) $ (!!) imagem 4): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n) (x1+90) y1
+                                                                                        | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n) (x1+90) y1
+
+desenhaObsAux:: World -> Float -> Float -> [Picture] 
+desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []), imagem, n) x1 y1 = [circle 1]
+desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n) x1 y1 = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n) x1 y1 ++ desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t), imagem, n) x1 (y1+90)
+
 novoEstado :: Key -> (Int,Int) -> Jogo
 novoEstado key (x,y) =
   let p = (x + dx, y + dy)
@@ -135,8 +145,12 @@ novoEstado key (x,y) =
         (SpecialKey KeyDown) -> (0,-90)
         (SpecialKey KeyLeft) -> (-90,0)
         (SpecialKey KeyRight) -> (90,0)
-  in (deslizaJogo 0 (Jogo (Jogador p) (mapaInicial)))
+  in Jogo (Jogador p) (mapaInicial)
+  --(deslizaJogo 0 (Jogo (Jogador p) (mapaInicial)))
 
+{-moveMapa :: Key -> Jogo -> Jogo
+moveMapa 
+-}
 --do num <- randomR (0,9::Int) era suposto gerar um numero para a deslizaJogo noa 
 
 event :: Event -> World -> World
@@ -189,16 +203,16 @@ main = do
   relva     <- loadBMP "relva.bmp"
   arvore    <- loadBMP "3.bmp"
   tronco    <- loadBMP "tronco.bmp"
-  carro1    <- loadBMP "Car_1_01.bmp"
-  {-carro2    <- loadBMP "Car_2_01.bmp"
-  carro3    <- loadBMP "Car_3_01.bmp"-}
+  carro1    <- loadBMP "car.bmp"
+  carro3    <- loadBMP "CarroAmarelo.bmp"
   let imagem = [scale 3 3 character,
                 scale 1 0.4 agua,
                 scale 0.3 0.143 estrada,
                 scale 0.2 0.170 relva,
-                scale 0.1 0.1 arvore,
-                scale 0.1 0.1 tronco,
-                scale 0.1 0.1 carro1]
+                scale 3.5 3.5 arvore,
+                scale 0.2 0.5 tronco,
+                scale 0.08 0.15 carro1,
+                scale 0.08 0.15 carro3]
   play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu
 
 
