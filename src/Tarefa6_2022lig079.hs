@@ -122,7 +122,7 @@ desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem
 desenhaOp opc = Translate (-150) 50 $ Text opc
 
 desenhaObs :: World -> Float -> Float -> [Picture]
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n) x1 y1 = [circle 1]
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n) x1 y1 = [circle 1] -- caso de paragem porque um circulo de raio 1 não se vê
 
 desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n) x1 y1 | o == Tronco = (Translate x1 (y1+10) $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
                                                                                           | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
