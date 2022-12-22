@@ -41,18 +41,18 @@ fr :: Int
 fr = 50
 
 mapaInicial :: Mapa
-mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
-                        (Estrada (-3), [c,c,n,n,n,c,n,n,c,n]),
-                        (Rio 2, [n,n,t,t,t,n,n,t,n,t]),
-                        (Relva, [n,a,a,n,a,n,a,n,a,a]),
-                        (Relva, [a,a,n,n,a,n,a,a,n,n]),
-                        (Rio 1, [n,n,t,t,t,n,t,t,n,n]),
-                        (Estrada 2, [n,n,n,c,n,c,n,n,c,c]),
-                        (Relva, [n,n,n,a,a,n,n,n,a,n]),
-                        (Relva, [a,n,n,a,n,n,n,n,a,a]),
-                        (Estrada (-2), [c,n,n,n,c,n,n,n,c,n]),
-                        (Relva, [n,n,a,n,n,n,n,a,n,n]),
-                        (Relva, [a,a,n,n,n,n,a,a,n,a])]) 
+mapaInicial = (Mapa 21 [(Relva, [n,n,a,a,n,a,n,n,a,n,n,n,a,a,n,n,n,n,a,n,n]),
+                        (Estrada (-3), [c,c,n,n,n,c,n,n,c,n,c,n,n,n,n,c,c,c,n,n,n]),
+                        (Rio 2, [n,n,t,t,t,n,n,t,n,t,n,n,t,t,t,n,n,n,n,n,t]),
+                        (Relva, [n,a,a,n,a,n,a,n,a,a,n,n,n,n,a,n,n,n,n,a,n]),
+                        (Relva, [a,a,n,n,a,n,a,a,n,n,a,a,a,n,n,a,n,n,n,n,a]),
+                        (Rio 1, [n,n,t,t,t,n,t,t,n,n,n,n,t,t,n,n,n,n,n,t,t]),
+                        (Estrada 2, [n,n,n,c,n,c,n,n,c,c,n,n,c,c,n,n,n,c,n,n,n]),
+                        (Relva, [n,n,n,a,a,n,n,n,a,n,n,a,a,n,a,n,n,n,n,a,n]),
+                        (Relva, [a,n,n,a,n,n,n,n,a,a,n,n,n,a,a,n,n,n,a,a,n]),
+                        (Estrada (-2), [c,n,n,n,c,n,n,n,c,n,c,n,n,n,n,n,n,c,c,n,n]),
+                        (Relva, [n,n,a,n,n,n,n,a,n,n,a,a,n,n,n,a,a,a,n,n,a]),
+                        (Relva, [a,a,n,n,n,n,a,a,n,a,n,n,n,n,a,n,n,n,n,a,n])]) 
                 where a = Arvore
                       n = Nenhum
                       t = Tronco
@@ -138,15 +138,7 @@ desenhaObsAux:: World -> Float -> Float -> [Picture]
 desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []), imagem, n) x1 y1 = [circle 1]
 desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n) x1 y1 = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n) x1 y1 ++ desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t), imagem, n) x1 (y1+90)
 
-novoEstado :: Key -> (Int,Int) -> Jogo
-novoEstado key (x,y) =
-  let p = (x + dx, y + dy)
-      (dx,dy) = case key of
-        (SpecialKey KeyUp) -> (0,90)
-        (SpecialKey KeyDown) -> (0,-90)
-        (SpecialKey KeyLeft) -> (-90,0)
-        (SpecialKey KeyRight) -> (90,0)
-  in Jogo (Jogador p) (mapaInicial)
+
   --(deslizaJogo 0 (Jogo (Jogador p) (mapaInicial)))
 
 {-moveMapa :: Key -> Jogo -> Jogo
@@ -164,18 +156,22 @@ event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Sair, jogo, i, pont) = e
 --continuar a jogar depois de vencer
 event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont) = estadoInicial i
 --identificar que acabou o jogo
-event _ (ModoJogo, (Jogo(Jogador(x,y)) (mapaInicial)),i,pont) | x >= 700 = (PerdeuJogo,(Jogo(Jogador (700,y)) (mapaInicial)), i, pont)
-                                                              | x <= -700 = (PerdeuJogo,(Jogo(Jogador (700,y)) (mapaInicial)), i, pont)
+event _ (ModoJogo, (Jogo(Jogador(x,y)) (mapaInicial)),i,pont) | x >= 900 = (PerdeuJogo,(Jogo(Jogador (900,y)) (mapaInicial)), i, pont)
+                                                              | x <= -900 = (PerdeuJogo,(Jogo(Jogador ((-900),y)) (mapaInicial)), i, pont)
                                                               | y <= -600 = (PerdeuJogo,(Jogo(Jogador (x,-600)) (mapaInicial)), i, pont)
  
---Modo Jogo
-event (EventKey key Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, novoEstado key (x,y), i, pont)
 --Andar para tras com o tempo
-event _ (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo(Jogador (x,y)) (mapaInicial)),i, pont)
+--event _ (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo(Jogador (x,y)) (mapaInicial)),i, pont)
+event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, animaJogo(Jogo (Jogador (x,y)) (mapaInicial)) (Move Cima), i, pont)
+event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, animaJogo(Jogo (Jogador (x,y)) (mapaInicial)) (Move Baixo), i, pont)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, animaJogo(Jogo (Jogador (x,y)) (mapaInicial)) (Move Direita), i, pont)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, animaJogo(Jogo (Jogador (x,y)) (mapaInicial)) (Move Esquerda), i, pont)
 --Nao reagir caso não aconteçam os casos em cima
 event _ x = x
 
-
+{-updateMapa :: ViewPort -> Float -> World -> World
+updateMapa ((-900),(-515)) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont)  = (ModoJogo, animaJogo(Jogo (Jogador (x,y)) (mapaInicial)) (Move Cima), i, pont)
+funçao que faz os carros e troncos moverem em funçao do tempo, continuar-}
 pontu :: Float -> World -> World
 pontu p (PerdeuJogo, j, i, pont) = (PerdeuJogo, j, i, pont)
 pontu p (o,j,i,pont) = (o,j,i,pont+p)
