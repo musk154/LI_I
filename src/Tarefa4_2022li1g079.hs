@@ -51,13 +51,13 @@ ondenaoTronco (Rio n, (x':y')) (x,y) = if x' == Nenhum then (x,y) : ondenaoTronc
 
 jogoTerminouAgua :: Coordenadas -> Mapa -> Bool
 jogoTerminouAgua (x,y) (Mapa c []) = False
-jogoTerminouAgua (x,y) (Mapa c ((Rio n, (x' :y')):t)) = if elem (x,y) (ondenaoTronco (Rio n, (x': y')) (0,0)) then True else jogoTerminouAgua (x-1,y) (Mapa c t)  
-jogoTerminouAgua (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = jogoTerminouAgua (x-1,y) (Mapa c t)
-jogoTerminouAgua (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouAgua (x-1,y) (Mapa c t)
+jogoTerminouAgua (x,y) (Mapa c ((Rio n, (x' :y')):t)) = if elem (x,y) (ondenaoTronco (Rio n, (x': y')) (0,0)) then True else jogoTerminouAgua (x,y-1) (Mapa c t)  
+jogoTerminouAgua (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = jogoTerminouAgua (x,y-1) (Mapa c t)
+jogoTerminouAgua (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouAgua (x,y-1) (Mapa c t)
 
 ondenaoTronco :: (Terreno, [Obstaculo]) -> Coordenadas -> [Coordenadas]
 ondenaoTronco (Rio n, []) (x,y) = []
-ondenaoTronco (Rio n, (x':y')) (x,y) = if x' == Nenhum then (x,y) : ondenaoTronco (Rio n, y') (x, y+1) else ondenaoTronco (Rio n, y') (x, y+1)
+ondenaoTronco (Rio n, (x':y')) (x,y) = if x' == Nenhum then (x,y) : ondenaoTronco (Rio n, y') (x+1, y) else ondenaoTronco (Rio n, y') (x+1, y)
 
 {-|
 A semelhança da funçao anterior, a funçao jogoTerminouCarro verifica se o jogador se encontra nas mesmas coordenadas que um carro, ou seja é atropelado ou nao.
@@ -76,10 +76,10 @@ ondeCarro (Estrada n, (x':y')) (x,y) = if x' == Carro then (x,y) : ondeCarro (Es
 
 jogoTerminouCarro :: Coordenadas -> Mapa -> Bool
 jogoTerminouCarro (x,y) (Mapa c []) = False
-jogoTerminouCarro (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = if elem (x,y) (ondeCarro (Estrada n, (x': y')) (0,0)) then True else jogoTerminouCarro (x-1,y) (Mapa c t)  
-jogoTerminouCarro (x,y) (Mapa c ((Rio n, (x' :y')):t)) = jogoTerminouCarro (x-1,y) (Mapa c t)
-jogoTerminouCarro (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouCarro (x-1,y) (Mapa c t)
+jogoTerminouCarro (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = if elem (x,y) (ondeCarro (Estrada n, (x': y')) (0,0)) then True else jogoTerminouCarro (x,y-1) (Mapa c t)  
+jogoTerminouCarro (x,y) (Mapa c ((Rio n, (x' :y')):t)) = jogoTerminouCarro (x,y-1) (Mapa c t)
+jogoTerminouCarro (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouCarro (x,y-1) (Mapa c t)
 
 ondeCarro :: (Terreno, [Obstaculo]) -> Coordenadas -> [Coordenadas]
 ondeCarro (Estrada n, []) (x,y) = []
-ondeCarro (Estrada n, (x':y')) (x,y) = if x' == Carro then (x,y) : ondeCarro (Estrada n, y') (x, y+1) else ondeCarro (Estrada n, y') (x, y+1)
+ondeCarro (Estrada n, (x':y')) (x,y) = if x' == Carro then (x,y) : ondeCarro (Estrada n, y') (x+1, y) else ondeCarro (Estrada n, y') (x+1, y)
