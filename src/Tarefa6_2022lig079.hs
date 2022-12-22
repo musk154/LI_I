@@ -42,6 +42,7 @@ fr = 50
 
 mapaInicial :: Mapa
 mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
+                        (Estrada (-3), [c,c,n,n,n,c,n,n,c,n]),
                         (Rio 2, [n,n,t,t,t,n,n,t,n,t]),
                         (Relva, [n,a,a,n,a,n,a,n,a,a]),
                         (Relva, [a,a,n,n,a,n,a,a,n,n]),
@@ -50,6 +51,7 @@ mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
                         (Relva, [n,n,n,a,a,n,n,n,a,n]),
                         (Relva, [a,n,n,a,n,n,n,n,a,a]),
                         (Estrada (-2), [c,n,n,n,c,n,n,n,c,n]),
+                        (Relva, [n,n,a,n,n,n,n,a,n,n]),
                         (Relva, [a,a,n,n,n,n,a,a,n,a])]) 
                 where a = Arvore
                       n = Nenhum
@@ -58,15 +60,15 @@ mapaInicial = (Mapa 10 [(Relva, [n,n,a,a,n,a,n,n,a,n]),
 
                        
 estadoInicial :: Imagem -> World
-estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (-90,-405)) (mapaInicial), imagem, 0) 
+estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (0,-455)) (mapaInicial), imagem, 0) 
 
 
 
 desenhaEstado :: World -> Picture
-desenhaEstado (PerdeuJogo, jogo, imagem, pont) = Translate (-50) 0 $ Color red $ scale 0.5 0.5 $ Text ("Score: " ++ show (round pont))
-desenhaEstado (Opcoes Jogar, jogo, imagem, pont) = Pictures [Color red $ desenhaOp "Jogar", Translate (-45) (-200) $  desenhaOp "Fechar"]
-desenhaEstado (Opcoes Sair, jogo, imagem, pont) = Pictures [desenhaOp "Jogar", Color red $ Translate (-45) (-200) $ desenhaOp "Fechar"]
-desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-425)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-425)) ++ [Translate i j $ player]
+desenhaEstado (PerdeuJogo, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 11)] ++ [Translate (-10) (-200) $ (Text (show (round pont)))]
+desenhaEstado (Opcoes Jogar, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 10 $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 10)]
+desenhaEstado (Opcoes Sair, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 10)] 
+desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-475)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (-475)) ++ [Translate i j $ player]
    where 
      i = fromIntegral x
      j = fromIntegral y
@@ -117,7 +119,7 @@ desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem
 
 
 
-desenhaOp opc = Translate (-100) 50 $ Text opc
+desenhaOp opc = Translate (-150) 50 $ Text opc
 
 desenhaObs :: World -> Float -> Float -> [Picture]
 desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n) x1 y1 = [circle 1]
@@ -199,11 +201,16 @@ main = do
   character <- loadBMP "character.bmp"
   agua      <- loadBMP "agua.bmp"
   estrada   <- loadBMP "estrada.bmp"
-  relva     <- loadBMP "relva.bmp"
+  relva     <- loadBMP "relva_1_.bmp"
   arvore    <- loadBMP "arvore1.bmp"
   tronco    <- loadBMP "tronco.bmp"
   carro1    <- loadBMP "car.bmp"
   carro3    <- loadBMP "CarroAmarelo.bmp"
+  fundo     <- loadBMP "pixel-art.bmp"
+  jogar     <- loadBMP "jogar.bmp"
+  sair      <- loadBMP "sair.bmp"
+  score     <- loadBMP "score.bmp"
+  papel     <- loadBMP "papel.bmp"
   let imagem = [scale 3 3 character,
                 scale 1 0.4 agua,
                 scale 0.3 0.143 estrada,
@@ -211,7 +218,12 @@ main = do
                 scale 0.25 0.2 arvore,
                 scale 0.2 0.5 tronco,
                 scale 0.08 0.15 carro1,
-                scale 0.08 0.15 carro3]
+                scale 0.08 0.15 carro3,
+                scale 1.9 1.75 fundo,
+                scale 1 1 jogar,
+                scale 1 1 sair,
+                scale 1 1 score,
+                scale 0.7 0.6 papel]
   play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu
 
 
