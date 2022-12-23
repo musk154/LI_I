@@ -174,7 +174,7 @@ funçao que faz os carros e troncos moverem em funçao do tempo, continuar-}
 
 
 pontu :: Float -> World -> World
-pontu p (ModoJogo, j, i, pont) = (ModoJogo, animaJogo j (Parado), i, pont)
+pontu p (ModoJogo, j, i, pont) = (ModoJogo, animaJogo j (Parado), i, pont+p)
 pontu p (PerdeuJogo, j, i, pont) = (PerdeuJogo, j, i, pont)
 pontu p (o,j,i,pont) = (o,j,i,pont+p)
 --função que deteta se o player saiu do mapa estando em cima do tronco vai ter de ser chamada aqui
