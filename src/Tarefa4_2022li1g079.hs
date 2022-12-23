@@ -36,17 +36,17 @@ jogoTerminoumapa (x,y) (Mapa c ((tr, (x':y')):t)) | x >= c || y >= length ((tr, 
 {-|
 A funçao jogoTerminouAgua determina se o jogo termina pois o jogador caiu na agua ou nao.
 Se o primeiro terreno for rio, utilizando uma funçao auxiliar (ondeTronco) que indica as coordenadas todas de onde nao ha tronco no mapa, ou seja, onde tem Nenhum, a funçao irá procurar se nas coordenadas dadas (do jogador) existe nessas coordenadas um tronco.
-Caso exista um tronco nessas coordenadas, o jogador nao morre, ou seja false. De seguida verifica o resto da funçao mas com as coordenadas (x-1,y) pois a linha analid¡sada com o movimento do mapa desaparece e passamos para a seguinte.
+Caso exista um tronco nessas coordenadas, o jogador nao morre, ou seja false. De seguida verifica o resto da funçao mas com as coordenadas (x,y-1) pois a linha analid¡sada com o movimento do mapa desaparece e passamos para a seguinte.
 Quando a funçao encontra os terrenos estrada ou relva, procura no resto do mapa pelo rio, caso haja.
 @jogoTerminouAgua :: Coordenadas -> Mapa -> Bool
 jogoTerminouAgua (x,y) (Mapa c []) = False
-jogoTerminouAgua (x,y) (Mapa c ((Rio n, (x' :y')):t)) = if elem (x,y) (ondenaoTronco (Rio n, (x': y')) (0,0)) then True else jogoTerminouAgua (x-1,y) (Mapa c t)  
-jogoTerminouAgua (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = jogoTerminouAgua (x-1,y) (Mapa c t)
-jogoTerminouAgua (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouAgua (x-1,y) (Mapa c t)
+jogoTerminouAgua (x,y) (Mapa c ((Rio n, (x' :y')):t)) = if elem (x,y) (ondenaoTronco (Rio n, (x': y')) (0,0)) then True else jogoTerminouAgua (x,y-1) (Mapa c t)  
+jogoTerminouAgua (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = jogoTerminouAgua (x,y-1) (Mapa c t)
+jogoTerminouAgua (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouAgua (x,y-1) (Mapa c t)
 
 ondenaoTronco :: (Terreno, [Obstaculo]) -> Coordenadas -> [Coordenadas]
 ondenaoTronco (Rio n, []) (x,y) = []
-ondenaoTronco (Rio n, (x':y')) (x,y) = if x' == Nenhum then (x,y) : ondenaoTronco (Rio n, y') (x, y+1) else ondenaoTronco (Rio n, y') (x, y+1)
+ondenaoTronco (Rio n, (x':y')) (x,y) = if x' == Nenhum then (x,y) : ondenaoTronco (Rio n, y') (x+1, y) else ondenaoTronco (Rio n, y') (x+1, y)
 @-}
 
 jogoTerminouAgua :: Coordenadas -> Mapa -> Bool
@@ -66,13 +66,13 @@ Neste caso, compara as coordenadas do jogador com as coordenadas obtidas na fun�
 No caso do terreno ser rio ou relva a funçao analisa o resto do mapa, comparando com as coordenada do jogador, onde o terreno for estrada.
 @jogoTerminouCarro :: Coordenadas -> Mapa -> Bool
 jogoTerminouCarro (x,y) (Mapa c []) = False
-jogoTerminouCarro (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = if elem (x,y) (ondeCarro (Estrada n, (x': y')) (0,0)) then True else jogoTerminouCarro (x-1,y) (Mapa c t)  
-jogoTerminouCarro (x,y) (Mapa c ((Rio n, (x' :y')):t)) = jogoTerminouCarro (x-1,y) (Mapa c t)
-jogoTerminouCarro (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouCarro (x-1,y) (Mapa c t)
+jogoTerminouCarro (x,y) (Mapa c ((Estrada n, (x' :y')):t)) = if elem (x,y) (ondeCarro (Estrada n, (x': y')) (0,0)) then True else jogoTerminouCarro (x,y-1) (Mapa c t)  
+jogoTerminouCarro (x,y) (Mapa c ((Rio n, (x' :y')):t)) = jogoTerminouCarro (x,y-1) (Mapa c t)
+jogoTerminouCarro (x,y) (Mapa c ((Relva , (x' :y')):t)) = jogoTerminouCarro (x,y-1) (Mapa c t)
 
 ondeCarro :: (Terreno, [Obstaculo]) -> Coordenadas -> [Coordenadas]
 ondeCarro (Estrada n, []) (x,y) = []
-ondeCarro (Estrada n, (x':y')) (x,y) = if x' == Carro then (x,y) : ondeCarro (Estrada n, y') (x, y+1) else ondeCarro (Estrada n, y') (x, y+1)@-}
+ondeCarro (Estrada n, (x':y')) (x,y) = if x' == Carro then (x,y) : ondeCarro (Estrada n, y') (x+1, y) else ondeCarro (Estrada n, y') (x+1, y)@-}
 
 jogoTerminouCarro :: Coordenadas -> Mapa -> Bool
 jogoTerminouCarro (x,y) (Mapa c []) = False

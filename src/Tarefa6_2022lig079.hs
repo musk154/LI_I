@@ -179,8 +179,10 @@ pontu p (PerdeuJogo, j, i, pont) = (PerdeuJogo, j, i, pont)
 pontu p (o,j,i,pont) = (o,j,i,pont+p)
 --função que deteta se o player saiu do mapa estando em cima do tronco vai ter de ser chamada aqui
 
-
-
+{-jogoAcaba :: World -> Bool -> World
+jogoAcaba (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) (jogoTerminouAgua ((x,y) (mapaInicial))) | (jogoTerminouAgua ((x,y) (mapaInicial))) == True = (PerdeuJogo, j, i, pont)
+                                                                                                             | otherwise = (ModoJogo, j, i, pont)
+-}
 -------CORES---------
 corFundo :: Color
 corFundo = white
