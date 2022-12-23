@@ -38,20 +38,20 @@ window :: Display
 window = FullScreen --InWindow "Teste" (1000, 1000) (0,0)
 
 fr :: Int
-fr = 2
+fr = 1
 
 mapaInicial :: Mapa
 mapaInicial = (Mapa 21 [(Relva, [a,a,n,n,n,n,a,a,n,a,n,n,n,n,a,n,n,n,n,a,n]),
                         (Relva, [n,n,a,n,n,n,n,a,n,n,a,a,n,n,n,a,a,a,n,n,a]),
-                        (Estrada (-2), [c,n,n,n,c,n,n,n,c,n,c,n,n,n,n,n,n,c,c,n,n]),
+                        (Estrada (-1), [c,n,n,n,c,n,n,n,c,n,c,n,n,n,n,n,n,c,c,n,n]),
                         (Relva, [a,n,n,a,n,n,n,n,a,a,n,n,n,a,a,n,n,n,a,a,n]),
                         (Relva, [n,n,n,a,a,n,n,n,a,n,n,a,a,n,a,n,n,n,n,a,n]),
-                        (Estrada 2, [n,n,n,c,n,c,n,n,c,c,n,n,c,c,n,n,n,c,n,n,n]),
+                        (Estrada 1, [n,n,n,c,n,c,n,n,c,c,n,n,c,c,n,n,n,c,n,n,n]),
                         (Rio 1, [n,n,t,t,t,n,t,t,n,n,n,n,t,t,n,n,n,n,n,t,t]),
                         (Relva, [a,a,n,n,a,n,n,a,n,n,n,a,a,n,n,a,n,n,n,n,n]),
                         (Relva, [n,n,n,n,a,n,a,n,n,a,n,n,n,n,a,n,n,n,n,a,n]),
                         (Rio 1, [n,n,t,t,t,n,n,t,n,t,n,n,t,t,t,n,n,n,n,n,t]),
-                        (Estrada (-3), [c,c,n,n,n,c,n,n,c,n,c,n,n,n,n,c,c,c,n,n,n]),
+                        (Estrada (-1), [c,n,n,n,n,n,n,n,c,n,c,n,n,n,n,c,c,c,n,n,n]),
                         (Relva, [n,n,a,a,n,a,n,n,a,n,n,n,a,a,n,n,n,n,a,n,n])]) 
                 where a = Arvore
                       n = Nenhum
@@ -161,10 +161,12 @@ event _ (ModoJogo, (Jogo(Jogador(x,y)) (mapaInicial)),i,pont) | x >= 900 = (Perd
  
 --Andar para tras com o tempo
 --event _ (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo(Jogador (x,y)) (mapaInicial)),i, pont)
-event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont)
-event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont)
-event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont)
-event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont)
+
+event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont)
+event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont)
+
 --Nao reagir caso não aconteçam os casos em cima
 event _ x = x
 
@@ -174,15 +176,12 @@ funçao que faz os carros e troncos moverem em funçao do tempo, continuar-}
 
 
 pontu :: Float -> World -> World
-pontu p (ModoJogo, j, i, pont) = (ModoJogo, animaJogo j (Parado), i, pont+p)
+pontu p (ModoJogo, j, i, pont) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont) else (ModoJogo, animaJogo j (Parado), i, pont+p)
 pontu p (PerdeuJogo, j, i, pont) = (PerdeuJogo, j, i, pont)
 pontu p (o,j,i,pont) = (o,j,i,pont+p)
 --função que deteta se o player saiu do mapa estando em cima do tronco vai ter de ser chamada aqui
 
-{-jogoAcaba :: World -> Bool -> World
-jogoAcaba (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) (jogoTerminouAgua ((x,y) (mapaInicial))) | (jogoTerminouAgua ((x,y) (mapaInicial))) == True = (PerdeuJogo, j, i, pont)
-                                                                                                             | otherwise = (ModoJogo, j, i, pont)
--}
+
 -------CORES---------
 corFundo :: Color
 corFundo = white
