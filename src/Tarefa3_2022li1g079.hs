@@ -30,13 +30,13 @@ Obs: na ultima linha o "otherwise" representa o movimento "Esquerda"
 
 
 player :: Jogador -> Mapa -> Jogada -> Jogador
-player (Jogador (x,y)) (Mapa l tl) (Parado) | elem (x,y) (posT (Mapa l tl) ((-900),(-515))) = (Jogador (posMoveT (x,y) (Mapa l tl)))
+player (Jogador (x,y)) (Mapa l tl) (Parado) | elem (x,y) (posT (Mapa l tl) ((-900),(515))) = (Jogador (posMoveT (x,y) (Mapa l tl)))
                                             | otherwise = (Jogador (x,y))
 
-player (Jogador (x,y)) (Mapa l tl) (Move jog) | jog == Cima && elem (x,y+90) (posA (Mapa l tl) ((-900),(-515))) = (Jogador (x,y))
-                                              | jog == Baixo && elem (x,y-90) (posA (Mapa l tl) ((-900),(-515))) = (Jogador (x,y))
-                                              | jog == Direita && elem (x+90,y) (posA (Mapa l tl) ((-900),(-515))) = (Jogador (x,y))
-                                              | jog == Esquerda && elem (y,(x-90)) (posA (Mapa l tl) ((-900),(-515))) = (Jogador (x,y))
+player (Jogador (x,y)) (Mapa l tl) (Move jog) | jog == Cima && elem (x,y+90) (posA (Mapa l tl) ((-900),(515))) = (Jogador (x,y))
+                                              | jog == Baixo && elem (x,y-90) (posA (Mapa l tl) ((-900),(515))) = (Jogador (x,y))
+                                              | jog == Direita && elem (x+90,y) (posA (Mapa l tl) ((-900),(515))) = (Jogador (x,y))
+                                              | jog == Esquerda && elem ((x-90),y) (posA (Mapa l tl) ((-900),(515))) = (Jogador (x,y))
                                               | jog == Cima = (Jogador (x,y+90))
                                               | jog == Baixo = (Jogador (x,y-90))
                                               | jog == Direita = (Jogador (x+90,y))
@@ -51,17 +51,17 @@ player (Jogador (x,y)) (Mapa l tl) (Move jog) | jog == Cima && elem (x,y+90) (po
 
 posT :: Mapa -> Coordenadas -> [Coordenadas]
 posT (Mapa l []) (x,y) = []
-posT (Mapa l ((Rio v,ob):t)) (x,y) = posTaux (Rio v, ob) (x,y) ++ posT (Mapa l t) ((x+90),y)
-posT (Mapa l ((Relva,ob):t)) (x,y) = posT (Mapa l t) ((x+90),y)
-posT (Mapa l ((Estrada v,ob):t)) (x,y) = posT (Mapa l t) ((x+90),y)
+posT (Mapa l ((Rio v,ob):t)) (x,y) = posTaux (Rio v, ob) (x,y) ++ posT (Mapa l t) (x,(y-90))
+posT (Mapa l ((Relva,ob):t)) (x,y) = posT (Mapa l t) (x,(y-90))
+posT (Mapa l ((Estrada v,ob):t)) (x,y) = posT (Mapa l t) (x,(y-90))
 
 {- | a função posTaux é uma função auxiliar que determina as coordenadas de todos os troncos numa linha do mapa
 -}
 
 posTaux :: (Terreno,[Obstaculo]) -> Coordenadas -> [Coordenadas]
 posTaux (Rio v,[]) (x,y) = []
-posTaux (Rio v, (h:t)) (x,y) | h == Tronco = ((x,y):posTaux (Rio v, t) (x,(y-90)))
-                             | otherwise = posTaux (Rio v, t) (x,(y-90))
+posTaux (Rio v, (h:t)) (x,y) | h == Tronco = ((x,y):posTaux (Rio v, t) ((x+90),y))
+                             | otherwise = posTaux (Rio v, t) ((x+90),y)
 
 
 
@@ -70,25 +70,24 @@ posTaux (Rio v, (h:t)) (x,y) | h == Tronco = ((x,y):posTaux (Rio v, t) (x,(y-90)
 
 posA :: Mapa -> Coordenadas -> [Coordenadas]
 posA (Mapa l []) (x,y) = []
-posA (Mapa l ((Relva,ob):t)) (x,y) = posAaux (Relva,ob) (x,y) ++ posA (Mapa l t) ((x+1),y)
-posA (Mapa l ((Rio v,ob):t)) (x,y) = posA (Mapa l t) ((x+90),y)
-posA (Mapa l ((Estrada v,ob):t)) (x,y) = posA (Mapa l t) ((x+90),y) 
+posA (Mapa l ((Relva,ob):t)) (x,y) = posAaux (Relva,ob) (x,y) ++ posA (Mapa l t) (x,(y-90))
+posA (Mapa l ((Rio v,ob):t)) (x,y) = posA (Mapa l t) (x,(y-90))
+posA (Mapa l ((Estrada v,ob):t)) (x,y) = posA (Mapa l t) (x,(y-90)) 
 
 {- | a função posAaux é uma função auxiliar que determina as coordenadas de árvores numa linha do mapa
 -}
 
 posAaux :: (Terreno,[Obstaculo]) -> Coordenadas -> [Coordenadas]
 posAaux (Relva,[]) (x,y) = []
-posAaux (Relva,(h:t)) (x,y) | h == Arvore = ((x,y):posAaux (Relva,t) (x,(y-90)))
-                            | otherwise = posAaux (Relva,t) (x,(y-90))
+posAaux (Relva,(h:t)) (x,y) | h == Arvore = ((x,y):posAaux (Relva,t) ((x+90),y))
+                            | otherwise = posAaux (Relva,t) ((x+90),y)
 
 {- | a função posMoveT é a função responsável por obter as proximas coordenadas de um tronco, para mais tarde ser usado no caso
 do jogador estar em cima de um tronco, se movimentar com ele -}
 
 --posOndeFoiTronco
 posMoveT :: Coordenadas -> Mapa -> Coordenadas
-posMoveT (x,y) (Mapa l ls) | elem (x,y) (posT (Mapa l ls) ((-900),(-515))) = posMoveVelocidade (x,y) (Mapa l ls)
-                           | otherwise = (x,y)
+posMoveT (x,y) (Mapa l ls) = ((x+90),y) 
 
 
 
@@ -96,9 +95,6 @@ posMoveT (x,y) (Mapa l ls) | elem (x,y) (posT (Mapa l ls) ((-900),(-515))) = pos
 do tronco consoante a velocidade
 Obs: Só utiliza um Int pois os troncos movimentam-se na horizontal, logo só vai mudar o y
 -}
-
-posMoveVelocidadeAux :: Int -> Mapa -> Int
-posMoveVelocidadeAux y (Mapa l ((Rio vel, obs):t)) = (y+vel)
 
 
 
@@ -125,9 +121,6 @@ animaObsAux ((Estrada vel, obs):t) | vel <= 0 = (Estrada vel, ((drop (-vel) obs)
 
 {- | a função posMoveVelocidade é uma função auxiliar da função posMoveT que verifica se a proxima posição de um tronco
 respeita as fronteiras do mapa -}
-
-posMoveVelocidade :: Coordenadas -> Mapa -> Coordenadas
-posMoveVelocidade (x,y) (Mapa l ls) = (x,(posMoveVelocidadeAux y (Mapa l (drop x ls))))
 
 
 
