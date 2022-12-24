@@ -10,7 +10,7 @@ import Graphics.Gloss.Interface.IO.Game
 
 
 
---import System.Random (randomR)
+--import System.Random (randomRIO)
 
 import LI12223
 import Tarefa1_2022li1g079
@@ -154,10 +154,7 @@ event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Sair, jogo,i, pont) = (Op
 event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Sair, jogo, i, pont) = error "Jogo Fechou"
 --continuar a jogar depois de vencer
 event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont) = estadoInicial i
---identificar que acabou o jogo
-event _ (ModoJogo, (Jogo(Jogador(x,y)) (mapaInicial)),i,pont) | x >= 900 = (PerdeuJogo,(Jogo(Jogador (900,y)) (mapaInicial)), i, pont)
-                                                              | x <= -900 = (PerdeuJogo,(Jogo(Jogador ((-900),y)) (mapaInicial)), i, pont)
-                                                              | y <= -600 = (PerdeuJogo,(Jogo(Jogador (x,-600)) (mapaInicial)), i, pont)
+
  
 --Andar para tras com o tempo
 --event _ (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = (ModoJogo, (Jogo(Jogador (x,y)) (mapaInicial)),i, pont)
@@ -177,11 +174,16 @@ funçao que faz os carros e troncos moverem em funçao do tempo, continuar-}
 
 pontu :: Float -> World -> World
 pontu p (ModoJogo, j, i, pont) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont) else (ModoJogo, animaJogo j (Parado), i, pont+p)
+--pontu p (ModoJogo, i, j, pont) = (ModoJogo, deslizaJogo num j (Parado), i, pont)
 pontu p (PerdeuJogo, j, i, pont) = (PerdeuJogo, j, i, pont)
 pontu p (o,j,i,pont) = (o,j,i,pont+p)
 --função que deteta se o player saiu do mapa estando em cima do tronco vai ter de ser chamada aqui
 
-
+{-geraNum :: [num] -> IO num 
+geraNum  num = do {r <- randomRIO (1, length num)
+                ; return $ num !! (r - 1)
+                }
+-}
 -------CORES---------
 corFundo :: Color
 corFundo = white
