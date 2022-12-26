@@ -30,7 +30,7 @@ jogoTerminoumapa (x,y) (Mapa c ((tr, (x':y')):t)) | x >= c || y >= length ((tr, 
 @-}
 
 jogoTerminoumapa :: Coordenadas -> Mapa -> Bool
-jogoTerminoumapa (x,y) (Mapa c ((tr, (x':y')):t)) | x > 900 || x < (-900) || y > 515 || y < (-475)= True
+jogoTerminoumapa (x,y) (Mapa c ((tr, (x':y')):t)) | x > 900 || x < (-900) || y < (-475)= True
                                                   | otherwise = False
 
 {-|

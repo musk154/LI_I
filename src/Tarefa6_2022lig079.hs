@@ -74,7 +74,7 @@ desenhaEstado (PerdeuJogo, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!
 desenhaEstado (Opcoes Jogar, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 10 $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
 desenhaEstado (Opcoes Sair, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-400) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
 desenhaEstado (Opcoes Skins, jogo,imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
-desenhaEstado (ModoSkins Skin1, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 14)]
+desenhaEstado (ModoSkins Skin1, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 14)] ++ [(Translate 0 0 $ (!!) imagem 18)]
 desenhaEstado (ModoSkins Skin2, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 15)] ++ [(Translate 0 0 $ (!!) imagem 16)]
 desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (515)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (515)) ++ [Translate i j $ player]
  where 
@@ -238,6 +238,7 @@ main = do
   p2          <- loadBMP "p2.bmp"
   pinkmonster <- loadBMP "Pink_Monster.bmp"
   pinkmonster1<- loadBMP "Pink_Monster_Walk.bmp"
+  player1     <- loadBMP "player1.bmp"
   let imagem = [scale 3 3 character,
                 scale 1 0.4 agua,
                 scale 0.3 0.143 estrada,
@@ -255,7 +256,8 @@ main = do
                 scale 1 1 p1,
                 scale 1 1 p2,
                 scale 7 7 pinkmonster,
-                scale 3 3 pinkmonster1]
+                scale 3 3 pinkmonster1,
+                scale 7 7 player1]
   play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu
 
 
