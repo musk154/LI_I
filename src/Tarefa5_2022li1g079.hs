@@ -16,5 +16,5 @@ import LI12223
 gerada aleatóriamente, no topo do mapa. Utiliza a funçao estende mapa para tal.  -}
 
 deslizaJogo :: Int -> Jogo -> Jogo
-deslizaJogo num (Jogo (Jogador (x,y)) (Mapa l ls)) = (Jogo (Jogador (x,y+90)) (estendeMapa (Mapa l (init ls)) num)) 
+deslizaJogo num (Jogo (Jogador (x,y)) (Mapa l ls)) = (Jogo (Jogador (x,y-90)) (estendeMapa (Mapa l (init ls)) num)) 
 
