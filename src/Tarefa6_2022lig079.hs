@@ -61,8 +61,8 @@ mapaInicial = (Mapa 21 [(Relva, [a,a,n,n,n,n,a,a,n,a,n,n,n,n,a,n,n,n,n,a,n]),
                       t = Tronco
                       c = Carro         
 
-estadoInicial :: Imagem -> World
-estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (0,-115)) (mapaInicial), imagem, 0, numero) 
+estadoInicial :: Imagem -> Numero -> World
+estadoInicial imagem numero= (Opcoes Jogar, Jogo (Jogador (0,-115)) (mapaInicial), imagem, 0, numero) 
 
 
 
@@ -98,8 +98,8 @@ desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter,ob):t)),imagem,n, num)
                                                                                                         (Translate (x1+1480) y1 $ (!!) imagem 3): 
                                                                                                         (Translate (x1+1665) y1 $ (!!) imagem 3):
                                                                                                         (Translate (x1+1850) y1 $ (!!) imagem 3):
-                                                                                                        desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
-                                                                                       | otherwise = desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, ob):t)),imagem,n) x1 y1 
+                                                                                                        desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n, num) x1 (y1-90)
+                                                                                       | otherwise = desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, ob):t)),imagem,n, num) x1 y1 
 
 desenhaMapaAux :: World -> Float -> Float -> [Picture]
 desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, ob):t)),imagem,n, num) x1 y1 = (Translate x1 y1 $ (!!) imagem 2):
@@ -113,7 +113,7 @@ desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, ob):t)),im
                                                                                                      (Translate (x1+1480) y1 $ (!!) imagem 2): 
                                                                                                      (Translate (x1+1665) y1 $ (!!) imagem 2):
                                                                                                      (Translate (x1+1850) y1 $ (!!) imagem 2):
-                                                                                                     desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
+                                                                                                     desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n, num) x1 (y1-90)
 
 desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem,n, num) x1 y1 = (Translate x1 y1 $ ((!!) imagem 1)):
                                                                                                  (Translate (x1+185) y1 $ ((!!) imagem 1)):
@@ -125,7 +125,7 @@ desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem
                                                                                                  (Translate (x1+1295) y1 $ ((!!) imagem 1)):
                                                                                                  (Translate (x1+1480) y1 $ ((!!) imagem 1)): 
                                                                                                  (Translate (x1+1665) y1 $ ((!!) imagem 1)):
-                                                                                                 (Translate (x1+1850) y1 $ ((!!) imagem 1)): desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
+                                                                                                 (Translate (x1+1850) y1 $ ((!!) imagem 1)): desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n, num) x1 (y1-90)
 
 
 
@@ -163,7 +163,7 @@ event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Sair, jogo, i, pont, num
 
 
 --continuar a jogar depois de vencer
-event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont, num) = estadoInicial i
+event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont, num) = estadoInicial i num
 --menu skins
 event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoSkins Skin2, jogo, i, pont, num)
 event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoSkins Skin2, jogo, i, pont, num)  
@@ -189,10 +189,10 @@ event _ x = x
 
 
 pontu :: Float -> World -> World
-pontu p (ModoJogo, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo, deslizaJogo (geraAleatorio 2) (animaJogo j (Parado)), i, pont, num)
-pontu p (ModoJogo1, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo1, deslizaJogo (geraAleatorio 2) (animaJogo j (Parado)), i, pont, num)
+pontu p (ModoJogo, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo, deslizaJogo (numAleatorio num+1) (animaJogo j (Parado)), i, pont, numAleatorio num+1)
+pontu p (ModoJogo1, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo1, deslizaJogo (numAleatorio num+1) (animaJogo j (Parado)), i, pont, numAleatorio num+1)
 --pontu p (ModoJogo, i, j, pont, num) = (ModoJogo, deslizaJogo num j (Parado), i, pont, num)
-pontu p (PerdeuJogo, j, i, pont, num) = (PerdeuJogo, j, i, pont, num)
+pontu p (PerdeuJogo, j, i, pont, num) = (PerdeuJogo, j, i, pont, numAleatorio num+1)
 pontu p (o,j,i,pont, num) = (o,j,i,pont, num)
 
 
@@ -240,7 +240,7 @@ main = do
   pinkmonster <- loadBMP "Pink_Monster.bmp"
   pinkmonster1<- loadBMP "Pink_Monster_Walk.bmp"
   player1     <- loadBMP "player1.bmp"
-  numero      <- randomRIO (0, 99)
+  numero      <- randomRIO (0, 100)
   let imagem = [scale 3 3 character,
                 scale 1 0.4 agua,
                 scale 0.3 0.143 estrada,
@@ -260,7 +260,7 @@ main = do
                 scale 7 7 pinkmonster,
                 scale 3 3 pinkmonster1,
                 scale 7 7 player1]
-  play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu 
+  play window corFundo fr (estadoInicial imagem numero) desenhaEstado event pontu 
 
 
 
