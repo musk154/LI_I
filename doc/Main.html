@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Main</title><link href="linuwial.css" rel="stylesheet" type="text/css" title="Linuwial" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { processClass: "mathjax", ignoreClass: ".*" } });</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><span class="caption empty">&nbsp;</span><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul></div><div id="content"><div id="module-header"><table class="info"><tr><th valign="top">Copyright</th><td>Leonor Cunha &lt;a103997@alunos.uminho.pt&gt;<br />Tiago Barros &lt;a104530@alunos.uminho.pt&gt;</td></tr><tr><th>Safe Haskell</th><td>None</td></tr></table><p class="caption">Main</p></div><div id="description"><p class="caption">Description</p><div class="doc empty">&nbsp;</div></div><div id="synopsis"><details id="syn"><summary>Synopsis</summary><ul class="details-toggle" data-details-id="syn"><li class="src short"><span class="keyword">data</span> <a href="#t:Opcao">Opcao</a><ul class="subs"><li>= <a href="#v:Jogar">Jogar</a></li><li>| <a href="#v:Sair">Sair</a></li><li>| <a href="#v:Skins">Skins</a></li></ul></li><li class="src short"><span class="keyword">data</span> <a href="#t:Menu">Menu</a><ul class="subs"><li>= <a href="#v:Opcoes">Opcoes</a> <a href="Main.html#t:Opcao" title="Main">Opcao</a></li><li>| <a href="#v:ModoJogo">ModoJogo</a></li><li>| <a href="#v:ModoJogo1">ModoJogo1</a></li><li>| <a href="#v:PerdeuJogo">PerdeuJogo</a></li><li>| <a href="#v:ModoSkins">ModoSkins</a> <a href="Main.html#t:Botao" title="Main">Botao</a></li></ul></li><li class="src short"><span class="keyword">data</span> <a href="#t:Botao">Botao</a><ul class="subs"><li>= <a href="#v:Skin1">Skin1</a></li><li>| <a href="#v:Skin2">Skin2</a></li></ul></li><li class="src short"><span class="keyword">type</span> <a href="#t:World">World</a> = (<a href="Main.html#t:Menu" title="Main">Menu</a>, <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a>, <a href="Main.html#t:Imagem" title="Main">Imagem</a>, <a href="Main.html#t:Pont" title="Main">Pont</a>, <a href="Main.html#t:Numero" title="Main">Numero</a>)</li><li class="src short"><span class="keyword">type</span> <a href="#t:Numero">Numero</a> = Int</li><li class="src short"><span class="keyword">type</span> <a href="#t:Pont">Pont</a> = Float</li><li class="src short"><span class="keyword">type</span> <a href="#t:Imagem">Imagem</a> = [Picture]</li><li class="src short"><a href="#v:window">window</a> :: Display</li><li class="src short"><a href="#v:fr">fr</a> :: Int</li><li class="src short"><a href="#v:mapaInicial">mapaInicial</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a></li><li class="src short"><a href="#v:estadoInicial">estadoInicial</a> :: <a href="Main.html#t:Imagem" title="Main">Imagem</a> -&gt; <a href="Main.html#t:Numero" title="Main">Numero</a> -&gt; <a href="Main.html#t:World" title="Main">World</a></li><li class="src short"><a href="#v:desenhaEstado">desenhaEstado</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Picture</li><li class="src short"><a href="#v:desenhaMapa">desenhaMapa</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture]</li><li class="src short"><a href="#v:desenhaMapaAux">desenhaMapaAux</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture]</li><li class="src short"><a href="#v:desenhaOp">desenhaOp</a> :: String -&gt; Picture</li><li class="src short"><a href="#v:desenhaObs">desenhaObs</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture]</li><li class="src short"><a href="#v:desenhaObsAux">desenhaObsAux</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture]</li><li class="src short"><a href="#v:event">event</a> :: Event -&gt; <a href="Main.html#t:World" title="Main">World</a> -&gt; <a href="Main.html#t:World" title="Main">World</a></li><li class="src short"><a href="#v:pontu">pontu</a> :: Float -&gt; <a href="Main.html#t:World" title="Main">World</a> -&gt; <a href="Main.html#t:World" title="Main">World</a></li><li class="src short"><a href="#v:geraAleatorio">geraAleatorio</a> :: Int -&gt; Int -&gt; [Int]</li><li class="src short"><a href="#v:numAleatorio">numAleatorio</a> :: Int -&gt; Int</li><li class="src short"><a href="#v:corFundo">corFundo</a> :: Color</li><li class="src short"><a href="#v:corRelva">corRelva</a> :: Color</li><li class="src short"><a href="#v:corEstrada">corEstrada</a> :: Color</li><li class="src short"><a href="#v:corRio">corRio</a> :: Color</li><li class="src short"><a href="#v:main">main</a> :: IO ()</li></ul></details></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><span class="keyword">data</span> <a id="t:Opcao" class="def">Opcao</a> <a href="#t:Opcao" class="selflink">#</a></p><div class="doc"><p>a data opcao diferencia as opcoes possiveis</p></div><div class="subs constructors"><p class="caption">Constructors</p><table><tr><td class="src"><a id="v:Jogar" class="def">Jogar</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:Sair" class="def">Sair</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:Skins" class="def">Skins</a></td><td class="doc empty">&nbsp;</td></tr></table></div></div><div class="top"><p class="src"><span class="keyword">data</span> <a id="t:Menu" class="def">Menu</a> <a href="#t:Menu" class="selflink">#</a></p><div class="doc"><p>data menu tem os v&#225;rios estados do jogo, segundo as op&#231;oes, ex: Menu inicial-&gt; Opcoes
+																	Menu game over -&gt; PerdeuJogo
+																	Menu inicio de jogo  personagem 1-&gt; ModoJogo
+																	Menu inicio de jogo personagem 2-&gt; ModoJogo1
+																	Menu escolher skins/personagens -&gt; ModoSkins  </p></div><div class="subs constructors"><p class="caption">Constructors</p><table><tr><td class="src"><a id="v:Opcoes" class="def">Opcoes</a> <a href="Main.html#t:Opcao" title="Main">Opcao</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:ModoJogo" class="def">ModoJogo</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:ModoJogo1" class="def">ModoJogo1</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:PerdeuJogo" class="def">PerdeuJogo</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:ModoSkins" class="def">ModoSkins</a> <a href="Main.html#t:Botao" title="Main">Botao</a></td><td class="doc empty">&nbsp;</td></tr></table></div></div><div class="top"><p class="src"><span class="keyword">data</span> <a id="t:Botao" class="def">Botao</a> <a href="#t:Botao" class="selflink">#</a></p><div class="doc"><p>a data botao separa as duas skins</p></div><div class="subs constructors"><p class="caption">Constructors</p><table><tr><td class="src"><a id="v:Skin1" class="def">Skin1</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:Skin2" class="def">Skin2</a></td><td class="doc empty">&nbsp;</td></tr></table></div></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:World" class="def">World</a> = (<a href="Main.html#t:Menu" title="Main">Menu</a>, <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a>, <a href="Main.html#t:Imagem" title="Main">Imagem</a>, <a href="Main.html#t:Pont" title="Main">Pont</a>, <a href="Main.html#t:Numero" title="Main">Numero</a>) <a href="#t:World" class="selflink">#</a></p><div class="doc"><p>define o que recebe o jogo, neste caso recebe, o menu em que esta, o jogo, a lista de imagens, a pontua&#231;ao (inteiro) e um numero aleatorio</p></div></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:Numero" class="def">Numero</a> = Int <a href="#t:Numero" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:Pont" class="def">Pont</a> = Float <a href="#t:Pont" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:Imagem" class="def">Imagem</a> = [Picture] <a href="#t:Imagem" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:window" class="def">window</a> :: Display <a href="#v:window" class="selflink">#</a></p><div class="doc"><p>janela utilizada, ecra inteiro
+<code>
+window :: Display
+window = FullScreen 
+</code></p></div></div><div class="top"><p class="src"><a id="v:fr" class="def">fr</a> :: Int <a href="#v:fr" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:mapaInicial" class="def">mapaInicial</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> <a href="#v:mapaInicial" class="selflink">#</a></p><div class="doc"><p>define o mapa inicial 
+<code>
+mapaInicial :: Mapa
+mapaInicial = (Mapa 21 [(Relva, [a,a,n,n,n,n,a,a,n,a,n,n,n,n,a,n,n,n,n,a,n]),
+                        (Relva, [n,n,a,n,n,n,n,a,n,n,a,a,n,n,n,a,a,a,n,n,a]),
+                        (Estrada (-1), [c,n,n,n,c,n,n,n,c,n,c,n,n,n,n,n,n,c,c,n,n]),
+                        (Relva, [a,n,n,a,n,n,n,n,a,a,n,n,n,a,a,n,n,n,a,a,n]),
+                        (Relva, [n,n,n,a,a,n,n,n,a,n,n,a,a,n,a,n,n,n,n,a,n]),
+                        (Estrada 1, [n,n,n,c,n,c,n,n,c,c,n,n,c,c,n,n,n,c,n,n,n]),
+                        (Rio 1, [n,n,t,t,t,n,t,t,n,n,n,n,t,t,n,n,n,n,n,t,t]),
+                        (Relva, [a,a,n,n,a,n,n,a,n,n,n,a,a,n,n,a,n,n,n,n,n]),
+                        (Relva, [n,n,n,n,a,n,a,n,n,a,n,n,n,n,a,n,n,n,n,a,n]),
+                        (Rio 1, [n,n,t,t,t,n,n,t,n,t,n,n,t,t,t,n,n,n,n,n,t]),
+                        (Estrada (-1), [c,n,n,n,n,n,n,n,n,n,n,n,n,n,n,c,c,c,n,n,n]),
+                        (Relva, [n,n,a,a,n,a,n,n,a,n,n,n,a,a,n,n,n,n,a,n,n])]) 
+                where a = Arvore
+                      n = Nenhum
+                      t = Tronco
+                      c = Carro  
+</code></p></div></div><div class="top"><p class="src"><a id="v:estadoInicial" class="def">estadoInicial</a> :: <a href="Main.html#t:Imagem" title="Main">Imagem</a> -&gt; <a href="Main.html#t:Numero" title="Main">Numero</a> -&gt; <a href="Main.html#t:World" title="Main">World</a> <a href="#v:estadoInicial" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:desenhaEstado" class="def">desenhaEstado</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Picture <a href="#v:desenhaEstado" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:desenhaMapa" class="def">desenhaMapa</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture] <a href="#v:desenhaMapa" class="selflink">#</a></p><div class="doc"><p>a desenhaMapa &#233; utilizada na desenhaEstado e utiliza a fun&#231;ao desenhaMapaAux para desenhar o mapa, nomeadamente colocar as imagens dos varios terrenos
+@
+desenhaMapa :: World -&gt; Float -&gt; Float -&gt; [Picture]
+desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []),image,n, num) x1 y1 = [circle 1]
+desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter,ob):t)),imagem,n, num) x1 y1 | ter == Relva = (Translate x1 y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+185) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+370) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+555) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+740) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+925) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+1110) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+1295) y1 $ (!!)imagem 3):
+                                                                                                        (Translate (x1+1480) y1 $ (!!) imagem 3): 
+                                                                                                        (Translate (x1+1665) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+1850) y1 $ (!!) imagem 3):
+                                                                                                        desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n, num) x1 (y1-90)
+                                                                                       | otherwise = desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, ob):t)),imagem,n, num) x1 y1 </p><p>desenhaMapaAux :: World -&gt; Float -&gt; Float -&gt; [Picture]
+desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, ob):t)),imagem,n, num) x1 y1 = (Translate x1 y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+185) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+370) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+555) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+740) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+925) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+1110) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+1295) y1 $ (!!)imagem 2):
+                                                                                                     (Translate (x1+1480) y1 $ (!!) imagem 2): 
+                                                                                                     (Translate (x1+1665) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+1850) y1 $ (!!) imagem 2):
+                                                                                                     desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n, num) x1 (y1-90)</p><p>desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem,n, num) x1 y1 = (Translate x1 y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+185) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+370) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+555) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+740) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+925) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1110) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1295) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1480) y1 $ ((!!) imagem 1)): 
+                                                                                                 (Translate (x1+1665) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1850) y1 $ ((!!) imagem 1)): desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n, num) x1 (y1-90)</p><p>@</p></div></div><div class="top"><p class="src"><a id="v:desenhaMapaAux" class="def">desenhaMapaAux</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture] <a href="#v:desenhaMapaAux" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:desenhaOp" class="def">desenhaOp</a> :: String -&gt; Picture <a href="#v:desenhaOp" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:desenhaObs" class="def">desenhaObs</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture] <a href="#v:desenhaObs" class="selflink">#</a></p><div class="doc"><p>desenha a opcao, &quot;centra&quot;
+<code>
+desenhaOp opc = Translate (-150) 50 $ Text opc
+</code></p><p>desenhaObs desenha os obstaculos, nomeadamente coloca as imagens dos obstaculos escolhidas no sitio correto
+@
+desenhaObs :: World -&gt; Float -&gt; Float -&gt; [Picture]
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n, num) x1 y1 = [circle 1] -- caso de paragem porque um circulo de raio 1 n&#227;o se v&#234;</p><p>desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n, num) x1 y1 | o == Tronco = (Translate x1 (y1+10) $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                          | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n, num) (x1+90) y1</p><p>desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, (o:t1)):t)),imagem,n, num) x1 y1 | o == Carro &amp;&amp; vel &gt; 0 = (Translate x1 y1 $ (!!) imagem 6): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                              | o == Carro &amp;&amp; vel &lt; 0 = (Translate x1 y1 $ (!!) imagem 7): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                              | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n, num) (x1+90) y1</p><p>desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, (o:t1)):t)),imagem,n, num) x1 y1 | o == Arvore = (Translate x1 (y1+10) $ (!!) imagem 4): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                        | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n, num) (x1+90) y1</p><p>desenhaObsAux:: World -&gt; Float -&gt; Float -&gt; [Picture] 
+desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []), imagem, n, num) x1 y1 = [circle 1]
+desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n, num) x1 y1 = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n, num) x1 y1 ++ desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t), imagem, n, num) x1 (y1-90)</p><p>@</p></div></div><div class="top"><p class="src"><a id="v:desenhaObsAux" class="def">desenhaObsAux</a> :: <a href="Main.html#t:World" title="Main">World</a> -&gt; Float -&gt; Float -&gt; [Picture] <a href="#v:desenhaObsAux" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:event" class="def">event</a> :: Event -&gt; <a href="Main.html#t:World" title="Main">World</a> -&gt; <a href="Main.html#t:World" title="Main">World</a> <a href="#v:event" class="selflink">#</a></p><div class="doc"><p>a event define o que acontece, como o jogo reage quando sao pressionadas determiadas teclas, no caso utilizamos a seta para cima, baixo,
+direita e esquerda e o enter;
+quando estas teclas sao utilizadas no menu inicial, permite escolher se o jogador quer iniciar o jogo como uma personagem j&#225; definida, se quer escolher a personagem
+com qual vai jogar, ou se quer fechar o jogo;
+se for selecionado o ModoJogo as setas (cima, baixo, direita e esquerda) permitem mover o personagem nas v&#225;rias direcoes; no modoJogo utiliza a personagem 1 no modoJogo1 utiliza a personagem 2;
+definimos tambem o que acontece, para cada uma das setas, no caso do jogo terminar (o jogador morrer) ou continuar a jogar.
+por ultimo, temos como o que acontece se for acionada outra tecla se nao as definidas;
+@
+event :: Event -&gt; World -&gt; World
+event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Jogar, jogo, i, pont, num) = (ModoJogo, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Skins, jogo, i, pont, num) = (ModoSkins Skin1, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Jogar, jogo, i, pont, num) = (Opcoes Sair, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Sair, jogo, i, pont, num) = (Opcoes Skins, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Skins, jogo, i, pont, num) = (Opcoes Jogar, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Jogar, jogo, i, pont, num) = (Opcoes Skins, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Skins, jogo, i, pont, num) = (Opcoes Sair, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Sair, jogo,i, pont, num) = (Opcoes Jogar, jogo,i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Sair, jogo, i, pont, num) = error &quot;Jogo Fechou&quot;</p><ul><li>-continuar a jogar depois de vencer
+event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont, num) = estadoInicial i num</li><li>-menu skins
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoSkins Skin2, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoSkins Skin2, jogo, i, pont, num)  
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin2, jogo, i, pont, num) = (ModoSkins Skin1, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin2, jogo, i, pont, num) = (ModoSkins Skin1, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoJogo, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (ModoSkins Skin2, jogo, i, pont, num) = (ModoJogo1, jogo, i, pont, num)</li><li>-modo Jogo
+event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont+1, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont-1, num)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont, num)</li></ul><p>event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont+1, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont-1, num)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont, num)</p><ul><li>-Nao reagir caso n&#227;o aconte&#231;am os casos em cima
+event _ x = x</li></ul><p>@ </p></div></div><div class="top"><p class="src"><a id="v:pontu" class="def">pontu</a> :: Float -&gt; <a href="Main.html#t:World" title="Main">World</a> -&gt; <a href="Main.html#t:World" title="Main">World</a> <a href="#v:pontu" class="selflink">#</a></p><div class="doc"><p>a fun&#231;ao pontu faz o jogo trabalhar ao longo do tempo/atualizar
+faz o jogo mover, deslizar o jogo e os obstaculos moverem.se (utiliza a deslizaMapa definida na tarefa5 para deslizar o mapa e a animaJogo para os objetos
+para isto utiliza tambem um gerador aleatorio de listas (funcao geraAleatorio) e depois de numeros (funcao numAleatorio, escolhe um numero aleatoriamente da lista gerada),
+os dois inteiros.
+@
+pontu :: Float -&gt; World -&gt; World
+pontu p (ModoJogo, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo, deslizaJogo (numAleatorio num+3) (animaJogo j (Parado)), i, pont, numAleatorio num+3)
+pontu p (ModoJogo1, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo1, deslizaJogo (numAleatorio num+3) (animaJogo j (Parado)), i, pont, numAleatorio num+3)
+--pontu p (ModoJogo, i, j, pont, num) = (ModoJogo, deslizaJogo num j (Parado), i, pont, num)
+pontu p (PerdeuJogo, j, i, pont, num) = (PerdeuJogo, j, i, pont, numAleatorio num+3)
+pontu p (o,j,i,pont, num) = (o,j,i,pont, num)</p><p>geraAleatorio :: Int -&gt; Int -&gt; [Int]
+geraAleatorio n seed = let gen = mkStdGen seed 
+                        in take n $ randomRs (0,99) gen </p><p>numAleatorio :: Int -&gt; Int
+numAleatorio seed = head $ geraAleatorio 1 seed</p><p>@</p></div></div><div class="top"><p class="src"><a id="v:geraAleatorio" class="def">geraAleatorio</a> :: Int -&gt; Int -&gt; [Int] <a href="#v:geraAleatorio" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:numAleatorio" class="def">numAleatorio</a> :: Int -&gt; Int <a href="#v:numAleatorio" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:corFundo" class="def">corFundo</a> :: Color <a href="#v:corFundo" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:corRelva" class="def">corRelva</a> :: Color <a href="#v:corRelva" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:corEstrada" class="def">corEstrada</a> :: Color <a href="#v:corEstrada" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:corRio" class="def">corRio</a> :: Color <a href="#v:corRio" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:main" class="def">main</a> :: IO () <a href="#v:main" class="selflink">#</a></p><div class="doc"><p>a fun&#231;ao main tem a lista de todas as imagens utilizadas no jogo, de seguida a escala para estas e no final como vai ser apresentado
+@
+main :: IO ()
+main = do
+  character   &lt;- loadBMP &quot;character.bmp&quot;
+  agua        &lt;- loadBMP &quot;agua.bmp&quot;
+  estrada     &lt;- loadBMP &quot;estrada.bmp&quot;
+  relva       &lt;- loadBMP &quot;relva_1_.bmp&quot;
+  arvore      &lt;- loadBMP &quot;arvore1.bmp&quot;
+  tronco      &lt;- loadBMP &quot;tronco.bmp&quot;
+  carro1      &lt;- loadBMP &quot;car.bmp&quot;
+  carro3      &lt;- loadBMP &quot;CarroAmarelo.bmp&quot;
+  fundo       &lt;- loadBMP &quot;pixel-art.bmp&quot;
+  jogar       &lt;- loadBMP &quot;jogar.bmp&quot;
+  sair        &lt;- loadBMP &quot;sair.bmp&quot;
+  score       &lt;- loadBMP &quot;score.bmp&quot;
+  papel       &lt;- loadBMP &quot;papel.bmp&quot;
+  personagens &lt;- loadBMP &quot;Personagens.bmp&quot;
+  p1          &lt;- loadBMP &quot;p1.bmp&quot;
+  p2          &lt;- loadBMP &quot;p2.bmp&quot;
+  pinkmonster &lt;- loadBMP &quot;Pink_Monster.bmp&quot;
+  pinkmonster1&lt;- loadBMP &quot;Pink_Monster_Walk.bmp&quot;
+  player1     &lt;- loadBMP &quot;player1.bmp&quot;
+  numero      &lt;- randomRIO (0, 100)
+  let imagem = [scale 3 3 character,
+                scale 1 0.4 agua,
+                scale 0.3 0.143 estrada,
+                scale 0.2 0.170 relva,
+                scale 0.25 0.2 arvore,
+                scale 0.2 0.5 tronco,
+                scale 0.08 0.15 carro1,
+                scale 0.08 0.15 carro3,
+                scale 1.9 1.75 fundo,
+                scale 1 1 jogar,
+                scale 1 1 sair,
+                scale 1 1 score,
+                scale 1.1 0.6 papel,
+                scale 1.3 1.3 personagens,
+                scale 1 1 p1,
+                scale 1 1 p2,
+                scale 7 7 pinkmonster,
+                scale 3 3 pinkmonster1,
+                scale 7 7 player1]
+  play window corFundo fr (estadoInicial imagem numero) desenhaEstado event pontu </p><p>@</p></div></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.23.0</p></div></body></html>

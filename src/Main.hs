@@ -1,3 +1,9 @@
+{- |
+Module      : Main
+Copyright   : Leonor Cunha <a103997@alunos.uminho.pt>
+              Tiago Barros <a104530@alunos.uminho.pt>
+-}
+
 module Main where
 
 
@@ -33,7 +39,12 @@ data Menu = Opcoes Opcao
 data Botao = Skin1 
            | Skin2
 
-type World = (Menu, Jogo, Imagem, Pont, Numero) {-| define o que recebe o jogo, neste caso recebe, o menu em que esta, o jogo, a lista de imagens, a pontuaçao (inteiro) e um numero aleatorio-}
+
+{-| define o que recebe o jogo, neste caso recebe, o menu em que esta, o jogo, a lista de imagens, a pontuaçao (inteiro) e um numero aleatorio-}
+
+
+type World = (Menu, Jogo, Imagem, Pont, Numero) 
+
 
 type Numero = Int
 
