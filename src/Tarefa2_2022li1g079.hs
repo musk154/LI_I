@@ -17,34 +17,31 @@ utiliza as funções auxiliares geradorT e geradorObs
 estendeMapa :: Mapa -> Int -> Mapa
 estendeMapa (Mapa l ls) num = Mapa l ((geradorT (Mapa l ls) num , geradorObs (geradorT (Mapa l ls) num) [] l num): ls)
 
+
+gerador :: [a] -> Int -> a
+gerador (h:t) n = if n < 0 then h else gerador (t ++ [h]) (n-1)
+
 {- |A função geradorT é responsável por gerar novos terrenos com velocidades aleatórias utiliza para isso a função geradorT e geradorObs-}
 
 geradorT :: Mapa -> Int -> Terreno
-geradorT (Mapa l ls) num | prox == Rio 0 = (Rio ((mod num (div l 2)) + 3))
-                         | prox == Estrada 0 = (Estrada ((mod num (div l 2)) + 1))
-                         | prox == Relva = Relva
-    where prox = proximosTerrenosValidos (Mapa l ls) !! mod (num + length ls) (length (proximosTerrenosValidos (Mapa l ls)))
+geradorT (Mapa l ls) num | prox == Rio 0 = if mod num 2 == 0 then Rio 1 else Rio (-1)
+                         | prox == Estrada 0 = if mod num 2 == 0 then Estrada 1 else Estrada (-1)
+                         | prox == Relva = Relva 
+                         where prox = gerador (proximosTerrenosValidos (Mapa l ls)) num
 
 {- | A função geradorObs é responsável por gerar uma lista aleatoria de novos obstaculos, tendo em conta as restrições da
 função proximosObstaculosValidos 
 -}
 
 geradorObs :: Terreno -> [Obstaculo] -> Int -> Int -> [Obstaculo]
-geradorObs (Rio vel) obs l num | obs == [] = geradorObs (Rio vel) ([[Nenhum,Tronco] !! (mod num 2)]) l num
-                               | length obs == l = obs
-                               | otherwise = geradorObs (Rio vel) prox l num
-    where prox = (proximosObstaculosValidos l (Rio vel, obs)) !! mod (num + length obs) (length (proximosObstaculosValidos l (Rio vel, obs))) : obs
+geradorObs (Rio vel) obs l num | length obs == l = obs
+                               | otherwise = geradorObs (Rio vel) (obs ++[gerador (proximosObstaculosValidos l ((Rio vel), obs)) num]) l (num + (div num 2))
 
-geradorObs (Estrada vel) obs l num | obs == [] = geradorObs (Estrada vel) ([[Nenhum,Carro] !! (mod num 2)]) l num
-                                   | length obs == l = obs
-                                   | otherwise = geradorObs (Estrada vel) prox l num
-    where prox = (proximosObstaculosValidos l (Estrada vel, obs)) !! mod (num + length obs) (length (proximosObstaculosValidos l (Estrada vel, obs))) : obs
+geradorObs (Estrada vel) obs l num | length obs == l = obs
+                                   | otherwise = geradorObs (Estrada vel) (obs ++[gerador (proximosObstaculosValidos l ((Estrada vel), obs)) num]) l (num + (div num 2))
 
-geradorObs (Relva) obs l num | obs == [] = geradorObs Relva ([[Nenhum,Arvore] !! (mod num 2)]) l num
-                             | length obs == l = obs 
-                             | otherwise = geradorObs Relva prox l num
-    where prox = (proximosObstaculosValidos l (Relva, obs)) !! mod (num + length obs) (length (proximosObstaculosValidos l (Relva, obs))) : obs
-
+geradorObs (Relva) obs l num | length obs == l = obs 
+                             | otherwise = geradorObs Relva (obs ++ [gerador (proximosObstaculosValidos l (Relva, obs)) num]) l (num + (div num 2))
 
 
 
@@ -61,7 +58,7 @@ proximosTerrenosValidos (Mapa l ((Estrada y,x):t)) = [Estrada 0, Rio 0, Relva ]
 proximosTerrenosValidos (Mapa l ((Relva, x):t)) = [Estrada 0, Rio 0, Relva]
 
 
-{- | A função proximosObstaculosValidos é responsável por gerar a lista de possoveis seguintes obstaculos, respeitando as restrições.
+{- | A função proximosObstaculosValidos é responsável por gerar a lista de possiveis seguintes obstaculos, respeitando as restrições.
 Para isso utiliza uma função auxiliar proximosObstaculosValidosaux
 -}
 

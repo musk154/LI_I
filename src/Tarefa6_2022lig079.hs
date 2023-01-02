@@ -5,12 +5,7 @@ import Graphics.Gloss
 import Graphics.Gloss.Interface.IO.Game
 
 
-
-
-
-
-
---import System.Random (randomRIO)
+import System.Random
 
 import LI12223
 import Tarefa1_2022li1g079
@@ -34,7 +29,9 @@ data Botao = Skin1
             | Skin2
             | Skin3
 
-type World = (Menu, Jogo, Imagem, Pont)
+type World = (Menu, Jogo, Imagem, Pont, Numero)
+
+type Numero = Int
 
 type Pont = Float
 
@@ -65,146 +62,148 @@ mapaInicial = (Mapa 21 [(Relva, [a,a,n,n,n,n,a,a,n,a,n,n,n,n,a,n,n,n,n,a,n]),
                       c = Carro         
 
 estadoInicial :: Imagem -> World
-estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (0,-475)) (mapaInicial), imagem, 0) 
+estadoInicial imagem = (Opcoes Jogar, Jogo (Jogador (0,-115)) (mapaInicial), imagem, 0, numero) 
 
 
 
 desenhaEstado :: World -> Picture
-desenhaEstado (PerdeuJogo, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 11)] ++ [Translate (-10) (-200) $ (Text (show (round pont)))]
-desenhaEstado (Opcoes Jogar, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 10 $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
-desenhaEstado (Opcoes Sair, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-400) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
-desenhaEstado (Opcoes Skins, jogo,imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
-desenhaEstado (ModoSkins Skin1, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 14)] ++ [(Translate 0 0 $ (!!) imagem 18)]
-desenhaEstado (ModoSkins Skin2, jogo, imagem, pont) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 15)] ++ [(Translate 0 0 $ (!!) imagem 16)]
-desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (515)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (515)) ++ [Translate i j $ player]
+desenhaEstado (PerdeuJogo, jogo, imagem, pont, num) = Pictures $ [(Translate 0 0 $ (!!) imagem 11)] ++ [Translate (-10) (-200) $ (Text (show (round pont)))]
+desenhaEstado (Opcoes Jogar, jogo, imagem, pont, num) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 10 $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
+desenhaEstado (Opcoes Sair, jogo, imagem, pont, num) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-400) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
+desenhaEstado (Opcoes Skins, jogo,imagem, pont, num) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 12)] ++ [(Translate 0 0 $ (!!) imagem 9)] ++ [(Translate 0 (-200) $ (!!) imagem 13)] ++ [(Translate 0 (-400) $ (!!) imagem 10)]
+desenhaEstado (ModoSkins Skin1, jogo, imagem, pont, num) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 14)] ++ [(Translate 0 0 $ (!!) imagem 18)]
+desenhaEstado (ModoSkins Skin2, jogo, imagem, pont, num) = Pictures $ [(Translate 0 0 $ (!!) imagem 8)] ++ [(Translate 0 (-190) $ (!!) imagem 15)] ++ [(Translate 0 0 $ (!!) imagem 16)]
+desenhaEstado (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n, num) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n, num) (-900) (515)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n, num) (-900) (515)) ++ [Translate i j $ player]
  where 
      i = fromIntegral x
      j = fromIntegral y
      player = head imagem
 
-desenhaEstado (ModoJogo1, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n) (-900) (515)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial), imagem, n) (-900) (515)) ++ [Translate i j $ (!!) imagem 17]
+desenhaEstado (ModoJogo1, Jogo (Jogador (x,y)) (mapaInicial),imagem,n, num) = Pictures $ (desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial),imagem,n, num) (-900) (515)) ++ (desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (mapaInicial), imagem, n, num) (-900) (515)) ++ [Translate i j $ (!!) imagem 17]
    where 
      i = fromIntegral x
      j = fromIntegral y
      
 
 desenhaMapa :: World -> Float -> Float -> [Picture]
-desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []),image,n) x1 y1 = [circle 1]
-desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter,ob):t)),imagem,n) x1 y1 | ter == Relva = (Translate x1 y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+185) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+370) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+555) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+740) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+925) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+1110) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+1295) y1 $ (!!)imagem 3):
-                                                                                                   (Translate (x1+1480) y1 $ (!!) imagem 3): 
-                                                                                                   (Translate (x1+1665) y1 $ (!!) imagem 3):
-                                                                                                   (Translate (x1+1850) y1 $ (!!) imagem 3):
-                                                                                                   desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
-                                                                                  | otherwise = desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, ob):t)),imagem,n) x1 y1 
+desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []),image,n, num) x1 y1 = [circle 1]
+desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter,ob):t)),imagem,n, num) x1 y1 | ter == Relva = (Translate x1 y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+185) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+370) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+555) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+740) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+925) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+1110) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+1295) y1 $ (!!)imagem 3):
+                                                                                                        (Translate (x1+1480) y1 $ (!!) imagem 3): 
+                                                                                                        (Translate (x1+1665) y1 $ (!!) imagem 3):
+                                                                                                        (Translate (x1+1850) y1 $ (!!) imagem 3):
+                                                                                                        desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
+                                                                                       | otherwise = desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, ob):t)),imagem,n) x1 y1 
 
 desenhaMapaAux :: World -> Float -> Float -> [Picture]
-desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, ob):t)),imagem,n) x1 y1 = (Translate x1 y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+185) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+370) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+555) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+740) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+925) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+1110) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+1295) y1 $ (!!)imagem 2):
-                                                                                                (Translate (x1+1480) y1 $ (!!) imagem 2): 
-                                                                                                (Translate (x1+1665) y1 $ (!!) imagem 2):
-                                                                                                (Translate (x1+1850) y1 $ (!!) imagem 2):
-                                                                                                desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
+desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, ob):t)),imagem,n, num) x1 y1 = (Translate x1 y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+185) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+370) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+555) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+740) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+925) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+1110) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+1295) y1 $ (!!)imagem 2):
+                                                                                                     (Translate (x1+1480) y1 $ (!!) imagem 2): 
+                                                                                                     (Translate (x1+1665) y1 $ (!!) imagem 2):
+                                                                                                     (Translate (x1+1850) y1 $ (!!) imagem 2):
+                                                                                                     desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
 
-desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem,n) x1 y1 = (Translate x1 y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+185) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+370) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+555) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+740) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+925) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+1110) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+1295) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+1480) y1 $ ((!!) imagem 1)): 
-                                                                                            (Translate (x1+1665) y1 $ ((!!) imagem 1)):
-                                                                                            (Translate (x1+1850) y1 $ ((!!) imagem 1)): desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
+desenhaMapaAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, ob):t)),imagem,n, num) x1 y1 = (Translate x1 y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+185) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+370) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+555) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+740) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+925) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1110) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1295) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1480) y1 $ ((!!) imagem 1)): 
+                                                                                                 (Translate (x1+1665) y1 $ ((!!) imagem 1)):
+                                                                                                 (Translate (x1+1850) y1 $ ((!!) imagem 1)): desenhaMapa (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t),imagem,n) x1 (y1-90)
 
 
 
 desenhaOp opc = Translate (-150) 50 $ Text opc
 
 desenhaObs :: World -> Float -> Float -> [Picture]
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n) x1 y1 = [circle 1] -- caso de paragem porque um circulo de raio 1 não se vê
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, []):t)), imagem, n, num) x1 y1 = [circle 1] -- caso de paragem porque um circulo de raio 1 não se vê
 
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n) x1 y1 | o == Tronco = (Translate x1 (y1+10) $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
-                                                                                          | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n) (x1+90) y1
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, (o:t1)):t)),imagem,n, num) x1 y1 | o == Tronco = (Translate x1 (y1+10) $ (!!) imagem 5): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                          | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Rio vel, t1):t)),imagem,n, num) (x1+90) y1
 
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, (o:t1)):t)),imagem,n) x1 y1 | o == Carro && vel > 0 = (Translate x1 y1 $ (!!) imagem 6): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
-                                                                                              | o == Carro && vel < 0 = (Translate x1 y1 $ (!!) imagem 7): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
-                                                                                              | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n) (x1+90) y1
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, (o:t1)):t)),imagem,n, num) x1 y1 | o == Carro && vel > 0 = (Translate x1 y1 $ (!!) imagem 6): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                              | o == Carro && vel < 0 = (Translate x1 y1 $ (!!) imagem 7): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                              | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Estrada vel, t1):t)),imagem,n, num) (x1+90) y1
 
-desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, (o:t1)):t)),imagem,n) x1 y1 | o == Arvore = (Translate x1 (y1+10) $ (!!) imagem 4): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n) (x1+90) y1
-                                                                                        | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n) (x1+90) y1
+desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, (o:t1)):t)),imagem,n, num) x1 y1 | o == Arvore = (Translate x1 (y1+10) $ (!!) imagem 4): desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n, num) (x1+90) y1
+                                                                                        | otherwise = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((Relva, t1):t)),imagem,n, num) (x1+90) y1
 
 desenhaObsAux:: World -> Float -> Float -> [Picture] 
-desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []), imagem, n) x1 y1 = [circle 1]
-desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n) x1 y1 = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n) x1 y1 ++ desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t), imagem, n) x1 (y1-90)
+desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l []), imagem, n, num) x1 y1 = [circle 1]
+desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n, num) x1 y1 = desenhaObs (ModoJogo, Jogo (Jogador (x,y)) (Mapa l ((ter, o):t)), imagem, n, num) x1 y1 ++ desenhaObsAux (ModoJogo, Jogo (Jogador (x,y)) (Mapa l t), imagem, n, num) x1 (y1-90)
 
 
 
 event :: Event -> World -> World
-event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Jogar, jogo, i, pont) = (ModoJogo, jogo, i, pont)
-event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Skins, jogo, i, pont) = (ModoSkins Skin1, jogo, i, pont)
-event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Jogar, jogo, i, pont) = (Opcoes Sair, jogo, i, pont)
-event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Sair, jogo, i, pont) = (Opcoes Skins, jogo, i, pont)
-event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Skins, jogo, i, pont) = (Opcoes Jogar, jogo, i, pont)
-event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Jogar, jogo, i, pont) = (Opcoes Skins, jogo, i, pont)
-event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Skins, jogo, i, pont) = (Opcoes Sair, jogo, i, pont)
-event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Sair, jogo,i, pont) = (Opcoes Jogar, jogo,i, pont)
-event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Sair, jogo, i, pont) = error "Jogo Fechou"
+event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Jogar, jogo, i, pont, num) = (ModoJogo, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Skins, jogo, i, pont, num) = (ModoSkins Skin1, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Jogar, jogo, i, pont, num) = (Opcoes Sair, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Sair, jogo, i, pont, num) = (Opcoes Skins, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyUp) Down _ _) (Opcoes Skins, jogo, i, pont, num) = (Opcoes Jogar, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Jogar, jogo, i, pont, num) = (Opcoes Skins, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Skins, jogo, i, pont, num) = (Opcoes Sair, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (Opcoes Sair, jogo,i, pont, num) = (Opcoes Jogar, jogo,i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (Opcoes Sair, jogo, i, pont, num) = error "Jogo Fechou"
 
 
 --continuar a jogar depois de vencer
-event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont) = estadoInicial i
+event (EventKey (SpecialKey KeyEnter) Down _ _) (PerdeuJogo, jogo, i ,pont, num) = estadoInicial i
 --menu skins
-event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin1, jogo, i, pont) = (ModoSkins Skin2, jogo, i, pont)
-event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin1, jogo, i, pont) = (ModoSkins Skin2, jogo, i, pont)  
-event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin2, jogo, i, pont) = (ModoSkins Skin1, jogo, i, pont)
-event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin2, jogo, i, pont) = (ModoSkins Skin1, jogo, i, pont)
-event (EventKey (SpecialKey KeyEnter) Down _ _) (ModoSkins Skin1, jogo, i, pont) = (ModoJogo, jogo, i, pont)
-event (EventKey (SpecialKey KeyEnter) Down _ _) (ModoSkins Skin2, jogo, i, pont) = (ModoJogo1, jogo, i, pont)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoSkins Skin2, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoSkins Skin2, jogo, i, pont, num)  
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoSkins Skin2, jogo, i, pont, num) = (ModoSkins Skin1, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoSkins Skin2, jogo, i, pont, num) = (ModoSkins Skin1, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (ModoSkins Skin1, jogo, i, pont, num) = (ModoJogo, jogo, i, pont, num)
+event (EventKey (SpecialKey KeyEnter) Down _ _) (ModoSkins Skin2, jogo, i, pont, num) = (ModoJogo1, jogo, i, pont, num)
 
 --modo Jogo
-event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont+1)
-event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont-1)
-event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont)
-event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont)
+event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont+1, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont-1, num)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont, num)
 
 
-event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont+1)
-event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont-1)
-event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont)
-event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont)
+event (EventKey (SpecialKey KeyUp) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Cima)) mapaInicial), i, pont+1, num)
+event (EventKey (SpecialKey KeyDown) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Baixo)) mapaInicial), i, pont-1, num)
+event (EventKey (SpecialKey KeyRight) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Direita)) mapaInicial), i, pont, num)
+event (EventKey (SpecialKey KeyLeft) Down _ _) (ModoJogo1, (Jogo (Jogador (x,y)) (mapaInicial)), i, pont, num) = if jogoTerminou (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial) == True then (PerdeuJogo,(Jogo (Jogador (x,y)) (mapaInicial)),i,pont, num) else (ModoJogo1, (Jogo (player(Jogador (x,y)) (mapaInicial) (Move Esquerda)) mapaInicial), i, pont, num)
 
 --Nao reagir caso não aconteçam os casos em cima
 event _ x = x
 
 
 pontu :: Float -> World -> World
-pontu p (ModoJogo, j, i, pont) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont) else (ModoJogo, deslizaJogo 2 (animaJogo j (Parado)), i, pont)
-pontu p (ModoJogo1, j, i, pont) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont) else (ModoJogo1, deslizaJogo 2 (animaJogo j (Parado)), i, pont)
---pontu p (ModoJogo, i, j, pont) = (ModoJogo, deslizaJogo num j (Parado), i, pont)
-pontu p (PerdeuJogo, j, i, pont) = (PerdeuJogo, j, i, pont)
-pontu p (o,j,i,pont) = (o,j,i,pont)
+pontu p (ModoJogo, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo, deslizaJogo (geraAleatorio 2) (animaJogo j (Parado)), i, pont, num)
+pontu p (ModoJogo1, j, i, pont, num) = if jogoTerminou (animaJogo j (Parado)) == True then (PerdeuJogo,j,i,pont, num) else (ModoJogo1, deslizaJogo (geraAleatorio 2) (animaJogo j (Parado)), i, pont, num)
+--pontu p (ModoJogo, i, j, pont, num) = (ModoJogo, deslizaJogo num j (Parado), i, pont, num)
+pontu p (PerdeuJogo, j, i, pont, num) = (PerdeuJogo, j, i, pont, num)
+pontu p (o,j,i,pont, num) = (o,j,i,pont, num)
 
---função que deteta se o player saiu do mapa estando em cima do tronco vai ter de ser chamada aqui
 
-{-geraNum :: [num] -> IO num 
-geraNum  num = do {r <- randomRIO (1, length num)
-                ; return $ num !! (r - 1)
-                }
--}
+geraAleatorio :: Int -> Int -> [Int]
+geraAleatorio n seed = let gen = mkStdGen seed 
+                        in take n $ randomRs (0,99) gen 
+                        
+numAleatorio :: Int -> Int
+numAleatorio seed = head $ geraAleatorio 1 seed
+
+
 -------CORES---------
 corFundo :: Color
 corFundo = white
@@ -241,6 +240,7 @@ main = do
   pinkmonster <- loadBMP "Pink_Monster.bmp"
   pinkmonster1<- loadBMP "Pink_Monster_Walk.bmp"
   player1     <- loadBMP "player1.bmp"
+  numero      <- randomRIO (0, 99)
   let imagem = [scale 3 3 character,
                 scale 1 0.4 agua,
                 scale 0.3 0.143 estrada,
@@ -260,7 +260,7 @@ main = do
                 scale 7 7 pinkmonster,
                 scale 3 3 pinkmonster1,
                 scale 7 7 player1]
-  play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu
+  play window corFundo fr (estadoInicial imagem) desenhaEstado event pontu 
 
 
 
